@@ -1,0 +1,2030 @@
+{
+  "sample": {
+    "visits": "4,376",
+    "watches": "297",
+    "nests": "163",
+    "nests_mono": "63",
+    "nests_poly": "100",
+    "seasons": "7",
+    "watches_mono": "113",
+    "watches_poly": "184",
+    "females": "65",
+    "males": "89",
+    "single_visitor": "45",
+    "poly_one_male": "72",
+    "poly_males_only": "8",
+    "duration_median_min": "117.6",
+    "duration_range_min": "16.6–174.3",
+    "overflow_watches": "6",
+    "flagged": "3",
+    "flagged_roster": "2",
+    "flagged_order": "1",
+    "n_iter": "1,000",
+    "among_pooled_pct": "98%",
+    "chick_age": "8 and 9",
+    "watches_age8": "158",
+    "watches_age9": "139",
+    "brood_range": "1–5",
+    "brood_mode": "3",
+    "chicks_range": "1–4",
+    "same_day_watches": "120",
+    "scenario_n": {
+      "mono": "85",
+      "poly_fm": "159",
+      "poly_fab": "87",
+      "poly_ab": "95"
+    }
+  },
+  "scen": {
+    "mono": {
+      "n": "85",
+      "rate": "76.9%",
+      "ci": "74.3–79.6",
+      "nulls": {
+        "simulated": {
+          "or": "2.05",
+          "ci": "1.76–2.38",
+          "excludes_one": true,
+          "above_one": true,
+          "below_one": false,
+          "boot_ci": "1.76–2.39",
+          "boot_excludes_one": true,
+          "rate": "62.0%",
+          "interval": "58.2–65.8",
+          "p": "< 0.001",
+          "p_two": "= 0.002",
+          "fit_ok": true,
+          "pp": "14.9"
+        },
+        "among": {
+          "or": "1.55",
+          "ci": "1.33–1.80",
+          "excludes_one": true,
+          "above_one": true,
+          "below_one": false,
+          "boot_ci": "1.37–1.76",
+          "boot_excludes_one": true,
+          "rate": "68.6%",
+          "interval": "65.9–71.4",
+          "p": "< 0.001",
+          "p_two": "= 0.002",
+          "fit_ok": true,
+          "pp": "8.3"
+        },
+        "within": {
+          "or": "1.16",
+          "ci": "0.99–1.35",
+          "excludes_one": false,
+          "above_one": false,
+          "below_one": false,
+          "boot_ci": "1.04–1.30",
+          "boot_excludes_one": true,
+          "rate": "74.4%",
+          "interval": "72.1–76.7",
+          "p": "= 0.021",
+          "p_two": "= 0.042",
+          "fit_ok": true,
+          "pp": "2.5"
+        },
+        "switched": {
+          "or": "1.02",
+          "ci": "0.87–1.19",
+          "excludes_one": false,
+          "above_one": false,
+          "below_one": false,
+          "boot_ci": "0.91–1.15",
+          "boot_excludes_one": false,
+          "rate": "76.6%",
+          "interval": "75.2–78.0",
+          "p": "= 0.394",
+          "p_two": "= 0.787",
+          "fit_ok": true,
+          "pp": "0.3"
+        },
+        "sorted": {
+          "or": "1.01",
+          "ci": "0.72–1.43",
+          "excludes_one": false,
+          "above_one": false,
+          "below_one": false,
+          "boot_ci": "0.76–1.28",
+          "boot_excludes_one": false,
+          "rate": "79.4%",
+          "interval": "79.4–79.4",
+          "p": "n/a",
+          "p_two": "n/a",
+          "fit_ok": true,
+          "pp": "−2.5"
+        }
+      }
+    },
+    "poly_fm": {
+      "n": "159",
+      "rate": "73.2%",
+      "ci": "70.5–75.9",
+      "nulls": {
+        "simulated": {
+          "or": "1.64",
+          "ci": "1.40–1.93",
+          "excludes_one": true,
+          "above_one": true,
+          "below_one": false,
+          "boot_ci": "1.32–1.79",
+          "boot_excludes_one": true,
+          "rate": "64.1%",
+          "interval": "61.2–67.0",
+          "p": "< 0.001",
+          "p_two": "= 0.002",
+          "fit_ok": true,
+          "pp": "9.1"
+        },
+        "among": {
+          "or": "1.45",
+          "ci": "1.26–1.68",
+          "excludes_one": true,
+          "above_one": true,
+          "below_one": false,
+          "boot_ci": "1.23–1.61",
+          "boot_excludes_one": true,
+          "rate": "66.6%",
+          "interval": "64.5–68.5",
+          "p": "< 0.001",
+          "p_two": "= 0.002",
+          "fit_ok": true,
+          "pp": "6.6"
+        },
+        "within": {
+          "or": "1.08",
+          "ci": "0.96–1.20",
+          "excludes_one": false,
+          "above_one": false,
+          "below_one": false,
+          "boot_ci": "0.98–1.19",
+          "boot_excludes_one": false,
+          "rate": "71.9%",
+          "interval": "70.2–73.6",
+          "p": "= 0.085",
+          "p_two": "= 0.170",
+          "fit_ok": true,
+          "pp": "1.3"
+        },
+        "switched": {
+          "or": "1.02",
+          "ci": "0.91–1.14",
+          "excludes_one": false,
+          "above_one": false,
+          "below_one": false,
+          "boot_ci": "0.94–1.11",
+          "boot_excludes_one": false,
+          "rate": "72.9%",
+          "interval": "71.7–74.0",
+          "p": "= 0.262",
+          "p_two": "= 0.523",
+          "fit_ok": true,
+          "pp": "0.4"
+        },
+        "sorted": {
+          "or": "1.14",
+          "ci": "0.94–1.37",
+          "excludes_one": false,
+          "above_one": false,
+          "below_one": false,
+          "boot_ci": "0.87–1.22",
+          "boot_excludes_one": false,
+          "rate": "74.7%",
+          "interval": "74.7–74.7",
+          "p": "n/a",
+          "p_two": "n/a",
+          "fit_ok": true,
+          "pp": "−1.5"
+        }
+      }
+    },
+    "poly_fab": {
+      "n": "87",
+      "rate": "77.2%",
+      "ci": "74.9–79.5",
+      "nulls": {
+        "simulated": {
+          "or": "1.66",
+          "ci": "1.40–1.98",
+          "excludes_one": true,
+          "above_one": true,
+          "below_one": false,
+          "boot_ci": "1.44–1.91",
+          "boot_excludes_one": true,
+          "rate": "67.0%",
+          "interval": "64.6–69.4",
+          "p": "< 0.001",
+          "p_two": "= 0.002",
+          "fit_ok": true,
+          "pp": "10.2"
+        },
+        "among": {
+          "or": "1.36",
+          "ci": "1.21–1.54",
+          "excludes_one": true,
+          "above_one": true,
+          "below_one": false,
+          "boot_ci": "1.23–1.52",
+          "boot_excludes_one": true,
+          "rate": "71.4%",
+          "interval": "69.4–73.2",
+          "p": "< 0.001",
+          "p_two": "= 0.002",
+          "fit_ok": true,
+          "pp": "5.8"
+        },
+        "within": {
+          "or": "1.07",
+          "ci": "0.95–1.22",
+          "excludes_one": false,
+          "above_one": false,
+          "below_one": false,
+          "boot_ci": "0.98–1.18",
+          "boot_excludes_one": false,
+          "rate": "75.9%",
+          "interval": "74.4–77.4",
+          "p": "= 0.062",
+          "p_two": "= 0.124",
+          "fit_ok": true,
+          "pp": "1.2"
+        },
+        "switched": {
+          "or": "1.04",
+          "ci": "0.92–1.18",
+          "excludes_one": false,
+          "above_one": false,
+          "below_one": false,
+          "boot_ci": "0.97–1.12",
+          "boot_excludes_one": false,
+          "rate": "76.5%",
+          "interval": "75.5–77.6",
+          "p": "= 0.128",
+          "p_two": "= 0.256",
+          "fit_ok": true,
+          "pp": "0.6"
+        },
+        "sorted": {
+          "or": "0.99",
+          "ci": "0.85–1.15",
+          "excludes_one": false,
+          "above_one": false,
+          "below_one": false,
+          "boot_ci": "0.85–1.13",
+          "boot_excludes_one": false,
+          "rate": "79.1%",
+          "interval": "79.1–79.1",
+          "p": "n/a",
+          "p_two": "n/a",
+          "fit_ok": true,
+          "pp": "−1.9"
+        }
+      }
+    },
+    "poly_ab": {
+      "n": "95",
+      "rate": "81.7%",
+      "ci": "78.2–84.9",
+      "nulls": {
+        "simulated": {
+          "or": "2.52",
+          "ci": "1.89–3.36",
+          "excludes_one": true,
+          "above_one": true,
+          "below_one": false,
+          "boot_ci": "1.87–3.05",
+          "boot_excludes_one": true,
+          "rate": "65.5%",
+          "interval": "61.0–70.0",
+          "p": "< 0.001",
+          "p_two": "= 0.002",
+          "fit_ok": true,
+          "pp": "16.2"
+        },
+        "among": {
+          "or": "1.61",
+          "ci": "1.31–1.99",
+          "excludes_one": true,
+          "above_one": true,
+          "below_one": false,
+          "boot_ci": "1.31–1.96",
+          "boot_excludes_one": true,
+          "rate": "74.2%",
+          "interval": "71.1–77.4",
+          "p": "< 0.001",
+          "p_two": "= 0.002",
+          "fit_ok": true,
+          "pp": "7.5"
+        },
+        "within": {
+          "or": "1.11",
+          "ci": "0.90–1.38",
+          "excludes_one": false,
+          "above_one": false,
+          "below_one": false,
+          "boot_ci": "0.95–1.31",
+          "boot_excludes_one": false,
+          "rate": "80.3%",
+          "interval": "77.8–82.7",
+          "p": "= 0.138",
+          "p_two": "= 0.276",
+          "fit_ok": true,
+          "pp": "1.4"
+        },
+        "switched": {
+          "or": "1.19",
+          "ci": "0.95–1.48",
+          "excludes_one": false,
+          "above_one": false,
+          "below_one": false,
+          "boot_ci": "1.05–1.36",
+          "boot_excludes_one": true,
+          "rate": "79.4%",
+          "interval": "77.8–81.1",
+          "p": "= 0.003",
+          "p_two": "= 0.006",
+          "fit_ok": true,
+          "pp": "2.3"
+        },
+        "sorted": {
+          "or": "1.18",
+          "ci": "0.74–1.89",
+          "excludes_one": false,
+          "above_one": false,
+          "below_one": false,
+          "boot_ci": "0.90–1.51",
+          "boot_excludes_one": false,
+          "rate": "83.9%",
+          "interval": "83.9–83.9",
+          "p": "n/a",
+          "p_two": "n/a",
+          "fit_ok": true,
+          "pp": "−2.2"
+        }
+      }
+    }
+  },
+  "system": {
+    "n_mono": "85",
+    "n_poly": "159",
+    "rate_mono": "76.7%",
+    "rate_poly": "74.8%",
+    "observed": {
+      "or": "0.90",
+      "ci": "0.68–1.19",
+      "excludes_one": false,
+      "above_one": false,
+      "below_one": false
+    },
+    "excess": {
+      "or": "0.93",
+      "ci": "0.77–1.12",
+      "excludes_one": false,
+      "above_one": false,
+      "below_one": false
+    },
+    "seen_observed": {
+      "or": "0.94",
+      "ci": "0.71–1.25",
+      "excludes_one": false,
+      "above_one": false,
+      "below_one": false
+    },
+    "seen_excess": {
+      "or": "0.93",
+      "ci": "0.74–1.17",
+      "excludes_one": false,
+      "above_one": false,
+      "below_one": false
+    },
+    "pp_ci": "−7.5–3.0",
+    "pp_ci_lo": "−7.5",
+    "pp_ci_hi": "3.0",
+    "pp_excess_ci": "−5.0–2.0"
+  },
+  "carers": {
+    "n_mono": "157",
+    "n_poly": "87",
+    "observed": {
+      "or": "0.93",
+      "ci": "0.73–1.17",
+      "excludes_one": false,
+      "above_one": false,
+      "below_one": false
+    },
+    "excess": {
+      "or": "0.91",
+      "ci": "0.76–1.09",
+      "excludes_one": false,
+      "above_one": false,
+      "below_one": false
+    },
+    "vs_within": {
+      "monogamous": {
+        "or": "1.15",
+        "ci": "1.02–1.29",
+        "excludes_one": true,
+        "above_one": true,
+        "below_one": false
+      },
+      "polyandrous": {
+        "or": "1.05",
+        "ci": "0.91–1.20",
+        "excludes_one": false,
+        "above_one": false,
+        "below_one": false
+      }
+    }
+  },
+  "brood": {
+    "mono": {
+      "obs": {
+        "or": "1.05",
+        "ci": "0.88–1.24",
+        "excludes_one": false,
+        "above_one": false,
+        "below_one": false
+      },
+      "excess": {
+        "or": "1.04",
+        "ci": "0.87–1.25",
+        "excludes_one": false,
+        "above_one": false,
+        "below_one": false
+      },
+      "iv": {
+        "rr": "1.00",
+        "ci": "0.89–1.12",
+        "excludes_one": false
+      }
+    },
+    "poly_ab": {
+      "obs": {
+        "or": "1.00",
+        "ci": "0.77–1.29",
+        "excludes_one": false,
+        "above_one": false,
+        "below_one": false
+      },
+      "excess": {
+        "or": "0.91",
+        "ci": "0.74–1.13",
+        "excludes_one": false,
+        "above_one": false,
+        "below_one": false
+      },
+      "iv": {
+        "rr": "0.98",
+        "ci": "0.86–1.12",
+        "excludes_one": false
+      }
+    },
+    "poly_fab": {
+      "obs": {
+        "or": "1.04",
+        "ci": "0.89–1.22",
+        "excludes_one": false,
+        "above_one": false,
+        "below_one": false
+      },
+      "excess": {
+        "or": "1.02",
+        "ci": "0.89–1.16",
+        "excludes_one": false,
+        "above_one": false,
+        "below_one": false
+      },
+      "iv": {
+        "rr": "1.00",
+        "ci": "0.92–1.10",
+        "excludes_one": false
+      }
+    },
+    "poly_fm": {
+      "obs": {
+        "or": "0.99",
+        "ci": "0.85–1.16",
+        "excludes_one": false,
+        "above_one": false,
+        "below_one": false
+      },
+      "excess": {
+        "or": "0.96",
+        "ci": "0.86–1.07",
+        "excludes_one": false,
+        "above_one": false,
+        "below_one": false
+      },
+      "iv": {
+        "rr": "0.99",
+        "ci": "0.91–1.07",
+        "excludes_one": false
+      }
+    }
+  },
+  "brood_sum": {
+    "rate_1": "4.5",
+    "rate_max": "10.6",
+    "max_chicks": "4",
+    "rate_rr": "1.34",
+    "rate_ci": "1.26–1.42",
+    "rate_above": true,
+    "cor_brood": "0.68",
+    "none_excludes": true,
+    "or_lo": "0.74",
+    "or_hi": "1.29"
+  },
+  "dyads": {
+    "sorted": {
+      "a>a": {
+        "rr": "0.98",
+        "ci": "0.86–1.12",
+        "excludes_one": false
+      },
+      "a>b": {
+        "rr": "0.96",
+        "ci": "0.83–1.12",
+        "excludes_one": false
+      },
+      "a>f": {
+        "rr": "0.98",
+        "ci": "0.87–1.10",
+        "excludes_one": false
+      },
+      "b>a": {
+        "rr": "0.96",
+        "ci": "0.82–1.13",
+        "excludes_one": false
+      },
+      "b>b": {
+        "rr": "1.00",
+        "ci": "0.80–1.26",
+        "excludes_one": false
+      },
+      "b>f": {
+        "rr": "0.83",
+        "ci": "0.68–1.002",
+        "excludes_one": false
+      },
+      "f>a": {
+        "rr": "0.99",
+        "ci": "0.89–1.11",
+        "excludes_one": false
+      },
+      "f>b": {
+        "rr": "0.85",
+        "ci": "0.70–1.04",
+        "excludes_one": false
+      },
+      "f>f": {
+        "rr": "1.00",
+        "ci": "0.86–1.17",
+        "excludes_one": false
+      }
+    },
+    "switched": {
+      "a>a": {
+        "rr": "0.97",
+        "ci": "0.85–1.11",
+        "excludes_one": false
+      },
+      "a>b": {
+        "rr": "1.03",
+        "ci": "0.89–1.20",
+        "excludes_one": false
+      },
+      "a>f": {
+        "rr": "1.00",
+        "ci": "0.89–1.12",
+        "excludes_one": false
+      },
+      "b>a": {
+        "rr": "1.00",
+        "ci": "0.86–1.17",
+        "excludes_one": false
+      },
+      "b>b": {
+        "rr": "0.99",
+        "ci": "0.80–1.22",
+        "excludes_one": false
+      },
+      "b>f": {
+        "rr": "1.00",
+        "ci": "0.84–1.20",
+        "excludes_one": false
+      },
+      "f>a": {
+        "rr": "1.02",
+        "ci": "0.91–1.15",
+        "excludes_one": false
+      },
+      "f>b": {
+        "rr": "0.95",
+        "ci": "0.79–1.15",
+        "excludes_one": false
+      },
+      "f>f": {
+        "rr": "0.99",
+        "ci": "0.85–1.15",
+        "excludes_one": false
+      }
+    },
+    "within": {
+      "a>a": {
+        "rr": "0.93",
+        "ci": "0.82–1.07",
+        "excludes_one": false
+      },
+      "a>b": {
+        "rr": "1.03",
+        "ci": "0.89–1.20",
+        "excludes_one": false
+      },
+      "a>f": {
+        "rr": "1.04",
+        "ci": "0.92–1.16",
+        "excludes_one": false
+      },
+      "b>a": {
+        "rr": "1.03",
+        "ci": "0.88–1.20",
+        "excludes_one": false
+      },
+      "b>b": {
+        "rr": "1.02",
+        "ci": "0.83–1.26",
+        "excludes_one": false
+      },
+      "b>f": {
+        "rr": "0.95",
+        "ci": "0.79–1.14",
+        "excludes_one": false
+      },
+      "f>a": {
+        "rr": "1.04",
+        "ci": "0.93–1.17",
+        "excludes_one": false
+      },
+      "f>b": {
+        "rr": "0.94",
+        "ci": "0.78–1.14",
+        "excludes_one": false
+      },
+      "f>f": {
+        "rr": "0.97",
+        "ci": "0.84–1.13",
+        "excludes_one": false
+      }
+    }
+  },
+  "dyads_obs": {
+    "a>a": {
+      "observed": "219",
+      "expected": "234.5",
+      "p": "= 0.012",
+      "rand_below": true,
+      "rand_above": false
+    },
+    "a>b": {
+      "observed": "167",
+      "expected": "161.9",
+      "p": "= 0.478",
+      "rand_below": false,
+      "rand_above": false
+    },
+    "a>f": {
+      "observed": "295",
+      "expected": "284.6",
+      "p": "= 0.148",
+      "rand_below": false,
+      "rand_above": false
+    },
+    "b>a": {
+      "observed": "162",
+      "expected": "157.7",
+      "p": "= 0.507",
+      "rand_below": false,
+      "rand_above": false
+    },
+    "b>b": {
+      "observed": "86",
+      "expected": "84.3",
+      "p": "= 0.741",
+      "rand_below": false,
+      "rand_above": false
+    },
+    "b>f": {
+      "observed": "118",
+      "expected": "124.0",
+      "p": "= 0.344",
+      "rand_below": false,
+      "rand_above": false
+    },
+    "f>a": {
+      "observed": "294",
+      "expected": "282.8",
+      "p": "= 0.128",
+      "rand_below": false,
+      "rand_above": false
+    },
+    "f>b": {
+      "observed": "106",
+      "expected": "112.8",
+      "p": "= 0.276",
+      "rand_below": false,
+      "rand_above": false
+    },
+    "f>f": {
+      "observed": "168",
+      "expected": "172.4",
+      "p": "= 0.527",
+      "rand_below": false,
+      "rand_above": false
+    }
+  },
+  "dyad_def": {
+    "lo": "0.93",
+    "hi": "1.04",
+    "all_include_one": true
+  },
+  "cv_role": {
+    "monogamous_a": {
+      "median": "0.51",
+      "iqr": "0.40–0.65",
+      "n": "90"
+    },
+    "polyandrous_a": {
+      "median": "0.53",
+      "iqr": "0.40–0.71",
+      "n": "154"
+    },
+    "polyandrous_b": {
+      "median": "0.58",
+      "iqr": "0.46–0.76",
+      "n": "63"
+    },
+    "monogamous_f": {
+      "median": "0.64",
+      "iqr": "0.48–0.77",
+      "n": "78"
+    },
+    "polyandrous_f": {
+      "median": "0.65",
+      "iqr": "0.48–0.87",
+      "n": "133"
+    }
+  },
+  "cv_models": {
+    "mono": {
+      "or": "1.09",
+      "ci": "0.91–1.31",
+      "excludes_one": false,
+      "above_one": false,
+      "below_one": false,
+      "n": "85"
+    },
+    "poly_ab": {
+      "or": "1.08",
+      "ci": "0.86–1.35",
+      "excludes_one": false,
+      "above_one": false,
+      "below_one": false,
+      "n": "93"
+    },
+    "poly_fab": {
+      "or": "1.04",
+      "ci": "0.92–1.18",
+      "excludes_one": false,
+      "above_one": false,
+      "below_one": false,
+      "n": "85"
+    },
+    "poly_fm": {
+      "or": "0.98",
+      "ci": "0.87–1.11",
+      "excludes_one": false,
+      "above_one": false,
+      "below_one": false,
+      "n": "155"
+    }
+  },
+  "cv_all_include_zero": true,
+  "no_flag": {
+    "mono": {
+      "or": "1.18",
+      "ci": "1.004–1.38",
+      "excludes_one": true,
+      "above_one": true,
+      "below_one": false,
+      "n": "83"
+    },
+    "poly_ab": {
+      "or": "1.11",
+      "ci": "0.90–1.38",
+      "excludes_one": false,
+      "above_one": false,
+      "below_one": false,
+      "n": "95"
+    },
+    "poly_fab": {
+      "or": "1.07",
+      "ci": "0.95–1.22",
+      "excludes_one": false,
+      "above_one": false,
+      "below_one": false,
+      "n": "87"
+    },
+    "poly_fm": {
+      "or": "1.07",
+      "ci": "0.96–1.20",
+      "excludes_one": false,
+      "above_one": false,
+      "below_one": false,
+      "n": "158"
+    }
+  },
+  "no_overflow": {
+    "mono": {
+      "or": "1.16",
+      "ci": "0.99–1.36",
+      "excludes_one": false,
+      "above_one": false,
+      "below_one": false,
+      "n": "82",
+      "boot_ci": "1.05–1.31",
+      "boot_above_one": true,
+      "boot_excludes_one": true
+    },
+    "poly_ab": {
+      "or": "1.12",
+      "ci": "0.90–1.40",
+      "excludes_one": false,
+      "above_one": false,
+      "below_one": false,
+      "n": "94",
+      "boot_ci": "0.96–1.33",
+      "boot_above_one": false,
+      "boot_excludes_one": false
+    },
+    "poly_fab": {
+      "or": "1.07",
+      "ci": "0.95–1.22",
+      "excludes_one": false,
+      "above_one": false,
+      "below_one": false,
+      "n": "86",
+      "boot_ci": "0.98–1.19",
+      "boot_above_one": false,
+      "boot_excludes_one": false
+    },
+    "poly_fm": {
+      "or": "1.08",
+      "ci": "0.96–1.20",
+      "excludes_one": false,
+      "above_one": false,
+      "below_one": false,
+      "n": "157",
+      "boot_ci": "0.98–1.20",
+      "boot_above_one": false,
+      "boot_excludes_one": false
+    }
+  },
+  "sync_boot": {
+    "S": {
+      "mono": {
+        "ratio": "0.74",
+        "ci": "0.28–1.29",
+        "below": false,
+        "above": false,
+        "excludes_one": false
+      },
+      "poly_ab": {
+        "ratio": "0.16",
+        "ci": "0.00–0.43",
+        "below": true,
+        "above": false,
+        "excludes_one": true
+      },
+      "poly_fab": {
+        "ratio": "0.35",
+        "ci": "0.12–0.63",
+        "below": true,
+        "above": false,
+        "excludes_one": true
+      },
+      "poly_fm": {
+        "ratio": "0.56",
+        "ci": "0.28–0.87",
+        "below": true,
+        "above": false,
+        "excludes_one": true
+      },
+      "system": {
+        "ratio": "0.75",
+        "ci": "0.32–2.05",
+        "below": false,
+        "above": false,
+        "excludes_one": false
+      }
+    },
+    "S2": {
+      "mono": {
+        "ratio": "1.08",
+        "ci": "0.96–1.20",
+        "below": false,
+        "above": false,
+        "excludes_one": false
+      },
+      "poly_ab": {
+        "ratio": "0.97",
+        "ci": "0.84–1.09",
+        "below": false,
+        "above": false,
+        "excludes_one": false
+      },
+      "poly_fab": {
+        "ratio": "1.05",
+        "ci": "0.98–1.13",
+        "below": false,
+        "above": false,
+        "excludes_one": false
+      },
+      "poly_fm": {
+        "ratio": "1.08",
+        "ci": "1.004–1.15",
+        "below": false,
+        "above": true,
+        "excludes_one": true
+      },
+      "system": {
+        "ratio": "1.00",
+        "ci": "0.87–1.16",
+        "below": false,
+        "above": false,
+        "excludes_one": false
+      }
+    }
+  },
+  "sync_holm": {
+    "S": {
+      "mono": {
+        "p": "= 0.639",
+        "sig": false
+      },
+      "poly_ab": {
+        "p": "= 0.098",
+        "sig": false
+      },
+      "poly_fab": {
+        "p": "= 0.016",
+        "sig": true
+      },
+      "poly_fm": {
+        "p": "= 0.132",
+        "sig": false
+      }
+    },
+    "S2": {
+      "mono": {
+        "p": "= 0.424",
+        "sig": false
+      },
+      "poly_ab": {
+        "p": "= 0.719",
+        "sig": false
+      },
+      "poly_fab": {
+        "p": "= 0.424",
+        "sig": false
+      },
+      "poly_fm": {
+        "p": "= 0.170",
+        "sig": false
+      }
+    }
+  },
+  "power": {
+    "mono": {
+      "sorted": {
+        "pp80": "11.2",
+        "pp80_raw": 11.1894,
+        "pp_max": 13.8095,
+        "type1": "0.0%",
+        "type1_raw": 0,
+        "base_rate": "74.4%",
+        "rows": [
+          {
+            "p": 0,
+            "pp": "0.0",
+            "power": "0%"
+          },
+          {
+            "p": 0.025,
+            "pp": "0.9",
+            "power": "0%"
+          },
+          {
+            "p": 0.05,
+            "pp": "1.8",
+            "power": "0%"
+          },
+          {
+            "p": 0.1,
+            "pp": "3.4",
+            "power": "0%"
+          },
+          {
+            "p": 0.15,
+            "pp": "4.8",
+            "power": "2%"
+          },
+          {
+            "p": 0.2,
+            "pp": "6.3",
+            "power": "7%"
+          },
+          {
+            "p": 0.3,
+            "pp": "9.0",
+            "power": "64%"
+          },
+          {
+            "p": 0.5,
+            "pp": "13.8",
+            "power": "100%"
+          }
+        ]
+      },
+      "switched": {
+        "pp80": "4.6",
+        "pp80_raw": 4.6197,
+        "pp_max": 13.8095,
+        "type1": "2.5%",
+        "type1_raw": 0.025,
+        "base_rate": "74.4%",
+        "rows": [
+          {
+            "p": 0,
+            "pp": "0.0",
+            "power": "3%"
+          },
+          {
+            "p": 0.025,
+            "pp": "0.9",
+            "power": "7%"
+          },
+          {
+            "p": 0.05,
+            "pp": "1.8",
+            "power": "19%"
+          },
+          {
+            "p": 0.1,
+            "pp": "3.4",
+            "power": "62%"
+          },
+          {
+            "p": 0.15,
+            "pp": "4.8",
+            "power": "83%"
+          },
+          {
+            "p": 0.2,
+            "pp": "6.3",
+            "power": "97%"
+          },
+          {
+            "p": 0.3,
+            "pp": "9.0",
+            "power": "100%"
+          },
+          {
+            "p": 0.5,
+            "pp": "13.8",
+            "power": "100%"
+          }
+        ]
+      },
+      "within": {
+        "pp80": "3.1",
+        "pp80_raw": 3.1375,
+        "pp_max": 13.8095,
+        "type1": "2.5%",
+        "type1_raw": 0.025,
+        "base_rate": "74.4%",
+        "rows": [
+          {
+            "p": 0,
+            "pp": "0.0",
+            "power": "2%"
+          },
+          {
+            "p": 0.025,
+            "pp": "0.9",
+            "power": "11%"
+          },
+          {
+            "p": 0.05,
+            "pp": "1.8",
+            "power": "41%"
+          },
+          {
+            "p": 0.1,
+            "pp": "3.4",
+            "power": "89%"
+          },
+          {
+            "p": 0.15,
+            "pp": "4.8",
+            "power": "98%"
+          },
+          {
+            "p": 0.2,
+            "pp": "6.3",
+            "power": "100%"
+          },
+          {
+            "p": 0.3,
+            "pp": "9.0",
+            "power": "100%"
+          },
+          {
+            "p": 0.5,
+            "pp": "13.8",
+            "power": "100%"
+          }
+        ]
+      }
+    },
+    "poly_ab": {
+      "sorted": {
+        "pp80": "4.9",
+        "pp80_raw": 4.9418,
+        "pp_max": 10.6645,
+        "type1": "4.5%",
+        "type1_raw": 0.045,
+        "base_rate": "80.4%",
+        "rows": [
+          {
+            "p": 0,
+            "pp": "0.0",
+            "power": "5%"
+          },
+          {
+            "p": 0.025,
+            "pp": "0.8",
+            "power": "7%"
+          },
+          {
+            "p": 0.05,
+            "pp": "1.5",
+            "power": "12%"
+          },
+          {
+            "p": 0.1,
+            "pp": "3.0",
+            "power": "38%"
+          },
+          {
+            "p": 0.15,
+            "pp": "4.2",
+            "power": "72%"
+          },
+          {
+            "p": 0.2,
+            "pp": "5.4",
+            "power": "85%"
+          },
+          {
+            "p": 0.3,
+            "pp": "7.3",
+            "power": "100%"
+          },
+          {
+            "p": 0.5,
+            "pp": "10.7",
+            "power": "100%"
+          }
+        ]
+      },
+      "switched": {
+        "pp80": "4.4",
+        "pp80_raw": 4.3784,
+        "pp_max": 10.6645,
+        "type1": "7.0%",
+        "type1_raw": 0.07,
+        "base_rate": "80.4%",
+        "rows": [
+          {
+            "p": 0,
+            "pp": "0.0",
+            "power": "7%"
+          },
+          {
+            "p": 0.025,
+            "pp": "0.8",
+            "power": "11%"
+          },
+          {
+            "p": 0.05,
+            "pp": "1.5",
+            "power": "20%"
+          },
+          {
+            "p": 0.1,
+            "pp": "3.0",
+            "power": "43%"
+          },
+          {
+            "p": 0.15,
+            "pp": "4.2",
+            "power": "78%"
+          },
+          {
+            "p": 0.2,
+            "pp": "5.4",
+            "power": "90%"
+          },
+          {
+            "p": 0.3,
+            "pp": "7.3",
+            "power": "100%"
+          },
+          {
+            "p": 0.5,
+            "pp": "10.7",
+            "power": "100%"
+          }
+        ]
+      },
+      "within": {
+        "pp80": "3.5",
+        "pp80_raw": 3.4756,
+        "pp_max": 10.6645,
+        "type1": "5.0%",
+        "type1_raw": 0.05,
+        "base_rate": "80.4%",
+        "rows": [
+          {
+            "p": 0,
+            "pp": "0.0",
+            "power": "5%"
+          },
+          {
+            "p": 0.025,
+            "pp": "0.8",
+            "power": "14%"
+          },
+          {
+            "p": 0.05,
+            "pp": "1.5",
+            "power": "23%"
+          },
+          {
+            "p": 0.1,
+            "pp": "3.0",
+            "power": "69%"
+          },
+          {
+            "p": 0.15,
+            "pp": "4.2",
+            "power": "94%"
+          },
+          {
+            "p": 0.2,
+            "pp": "5.4",
+            "power": "99%"
+          },
+          {
+            "p": 0.3,
+            "pp": "7.3",
+            "power": "100%"
+          },
+          {
+            "p": 0.5,
+            "pp": "10.7",
+            "power": "100%"
+          }
+        ]
+      }
+    },
+    "poly_fab": {
+      "sorted": {
+        "pp80": "6.2",
+        "pp80_raw": 6.2371,
+        "pp_max": 10.526,
+        "type1": "0.0%",
+        "type1_raw": 0,
+        "base_rate": "76.0%",
+        "rows": [
+          {
+            "p": 0,
+            "pp": "0.0",
+            "power": "0%"
+          },
+          {
+            "p": 0.025,
+            "pp": "0.6",
+            "power": "0%"
+          },
+          {
+            "p": 0.05,
+            "pp": "1.3",
+            "power": "0%"
+          },
+          {
+            "p": 0.1,
+            "pp": "2.4",
+            "power": "0%"
+          },
+          {
+            "p": 0.15,
+            "pp": "3.7",
+            "power": "12%"
+          },
+          {
+            "p": 0.2,
+            "pp": "4.9",
+            "power": "41%"
+          },
+          {
+            "p": 0.3,
+            "pp": "6.8",
+            "power": "97%"
+          },
+          {
+            "p": 0.5,
+            "pp": "10.5",
+            "power": "100%"
+          }
+        ]
+      },
+      "switched": {
+        "pp80": "3.4",
+        "pp80_raw": 3.3571,
+        "pp_max": 10.526,
+        "type1": "3.5%",
+        "type1_raw": 0.035,
+        "base_rate": "76.0%",
+        "rows": [
+          {
+            "p": 0,
+            "pp": "0.0",
+            "power": "3%"
+          },
+          {
+            "p": 0.025,
+            "pp": "0.6",
+            "power": "10%"
+          },
+          {
+            "p": 0.05,
+            "pp": "1.3",
+            "power": "22%"
+          },
+          {
+            "p": 0.1,
+            "pp": "2.4",
+            "power": "60%"
+          },
+          {
+            "p": 0.15,
+            "pp": "3.7",
+            "power": "88%"
+          },
+          {
+            "p": 0.2,
+            "pp": "4.9",
+            "power": "98%"
+          },
+          {
+            "p": 0.3,
+            "pp": "6.8",
+            "power": "100%"
+          },
+          {
+            "p": 0.5,
+            "pp": "10.5",
+            "power": "100%"
+          }
+        ]
+      },
+      "within": {
+        "pp80": "2.3",
+        "pp80_raw": 2.3137,
+        "pp_max": 10.526,
+        "type1": "4.0%",
+        "type1_raw": 0.04,
+        "base_rate": "76.0%",
+        "rows": [
+          {
+            "p": 0,
+            "pp": "0.0",
+            "power": "4%"
+          },
+          {
+            "p": 0.025,
+            "pp": "0.6",
+            "power": "14%"
+          },
+          {
+            "p": 0.05,
+            "pp": "1.3",
+            "power": "31%"
+          },
+          {
+            "p": 0.1,
+            "pp": "2.4",
+            "power": "86%"
+          },
+          {
+            "p": 0.15,
+            "pp": "3.7",
+            "power": "100%"
+          },
+          {
+            "p": 0.2,
+            "pp": "4.9",
+            "power": "100%"
+          },
+          {
+            "p": 0.3,
+            "pp": "6.8",
+            "power": "100%"
+          },
+          {
+            "p": 0.5,
+            "pp": "10.5",
+            "power": "100%"
+          }
+        ]
+      }
+    },
+    "poly_fm": {
+      "sorted": {
+        "pp80": "7.2",
+        "pp80_raw": 7.1968,
+        "pp_max": 16.542,
+        "type1": "0.0%",
+        "type1_raw": 0,
+        "base_rate": "71.9%",
+        "rows": [
+          {
+            "p": 0,
+            "pp": "0.0",
+            "power": "0%"
+          },
+          {
+            "p": 0.025,
+            "pp": "1.1",
+            "power": "0%"
+          },
+          {
+            "p": 0.05,
+            "pp": "2.2",
+            "power": "0%"
+          },
+          {
+            "p": 0.1,
+            "pp": "4.1",
+            "power": "19%"
+          },
+          {
+            "p": 0.15,
+            "pp": "6.2",
+            "power": "58%"
+          },
+          {
+            "p": 0.2,
+            "pp": "7.7",
+            "power": "91%"
+          },
+          {
+            "p": 0.3,
+            "pp": "11.0",
+            "power": "100%"
+          },
+          {
+            "p": 0.5,
+            "pp": "16.5",
+            "power": "100%"
+          }
+        ]
+      },
+      "switched": {
+        "pp80": "3.8",
+        "pp80_raw": 3.833,
+        "pp_max": 16.542,
+        "type1": "4.5%",
+        "type1_raw": 0.045,
+        "base_rate": "71.9%",
+        "rows": [
+          {
+            "p": 0,
+            "pp": "0.0",
+            "power": "5%"
+          },
+          {
+            "p": 0.025,
+            "pp": "1.1",
+            "power": "15%"
+          },
+          {
+            "p": 0.05,
+            "pp": "2.2",
+            "power": "33%"
+          },
+          {
+            "p": 0.1,
+            "pp": "4.1",
+            "power": "88%"
+          },
+          {
+            "p": 0.15,
+            "pp": "6.2",
+            "power": "100%"
+          },
+          {
+            "p": 0.2,
+            "pp": "7.7",
+            "power": "100%"
+          },
+          {
+            "p": 0.3,
+            "pp": "11.0",
+            "power": "100%"
+          },
+          {
+            "p": 0.5,
+            "pp": "16.5",
+            "power": "100%"
+          }
+        ]
+      },
+      "within": {
+        "pp80": "3.0",
+        "pp80_raw": 3.0277,
+        "pp_max": 16.542,
+        "type1": "3.0%",
+        "type1_raw": 0.03,
+        "base_rate": "71.9%",
+        "rows": [
+          {
+            "p": 0,
+            "pp": "0.0",
+            "power": "3%"
+          },
+          {
+            "p": 0.025,
+            "pp": "1.1",
+            "power": "26%"
+          },
+          {
+            "p": 0.05,
+            "pp": "2.2",
+            "power": "64%"
+          },
+          {
+            "p": 0.1,
+            "pp": "4.1",
+            "power": "100%"
+          },
+          {
+            "p": 0.15,
+            "pp": "6.2",
+            "power": "100%"
+          },
+          {
+            "p": 0.2,
+            "pp": "7.7",
+            "power": "100%"
+          },
+          {
+            "p": 0.3,
+            "pp": "11.0",
+            "power": "100%"
+          },
+          {
+            "p": 0.5,
+            "pp": "16.5",
+            "power": "100%"
+          }
+        ]
+      }
+    }
+  },
+  "power_meta": {
+    "n_rep": "200",
+    "p_max": "0.50"
+  },
+  "pseudo": {
+    "n": "90",
+    "n_real": "79",
+    "n_dates": "37",
+    "n_watches": "79",
+    "pseudo": {
+      "sorted": {
+        "or": "1.04",
+        "ci": "0.87–1.23",
+        "excludes_one": false,
+        "above_one": false,
+        "below_one": false,
+        "boot_ci": "0.89–1.24",
+        "boot_excludes_one": false,
+        "observed": "75.3%",
+        "null_rate": "77.3%",
+        "pp": "−2.0"
+      },
+      "switched": {
+        "or": "1.03",
+        "ci": "0.87–1.22",
+        "excludes_one": false,
+        "above_one": false,
+        "below_one": false,
+        "boot_ci": "0.92–1.16",
+        "boot_excludes_one": false,
+        "observed": "75.3%",
+        "null_rate": "74.8%",
+        "pp": "0.5"
+      },
+      "within": {
+        "or": "1.11",
+        "ci": "0.94–1.31",
+        "excludes_one": false,
+        "above_one": false,
+        "below_one": false,
+        "boot_ci": "0.93–1.31",
+        "boot_excludes_one": false,
+        "observed": "75.3%",
+        "null_rate": "73.6%",
+        "pp": "1.8"
+      }
+    },
+    "real": {
+      "sorted": {
+        "or": "0.91",
+        "ci": "0.77–1.07",
+        "excludes_one": false,
+        "above_one": false,
+        "below_one": false,
+        "boot_ci": "0.70–1.16",
+        "boot_excludes_one": false,
+        "observed": "71.8%",
+        "null_rate": "75.4%",
+        "pp": "−3.6"
+      },
+      "switched": {
+        "or": "1.00",
+        "ci": "0.85–1.17",
+        "excludes_one": false,
+        "above_one": false,
+        "below_one": false,
+        "boot_ci": "0.91–1.10",
+        "boot_excludes_one": false,
+        "observed": "71.8%",
+        "null_rate": "71.9%",
+        "pp": "−0.1"
+      },
+      "within": {
+        "or": "1.03",
+        "ci": "0.88–1.21",
+        "excludes_one": false,
+        "above_one": false,
+        "below_one": false,
+        "boot_ci": "0.95–1.12",
+        "boot_excludes_one": false,
+        "observed": "71.8%",
+        "null_rate": "71.2%",
+        "pp": "0.6"
+      }
+    },
+    "difference": {
+      "or": "0.93",
+      "ci": "0.75–1.16",
+      "excludes_one": false,
+      "above_one": false,
+      "below_one": false
+    }
+  },
+  "span_b": {
+    "mono": {
+      "or": "2.11",
+      "ci": "1.81–2.45",
+      "excludes_one": true,
+      "above_one": true,
+      "below_one": false,
+      "rate": "61.4%"
+    },
+    "poly_fm": {
+      "or": "1.67",
+      "ci": "1.43–1.96",
+      "excludes_one": true,
+      "above_one": true,
+      "below_one": false,
+      "rate": "63.8%"
+    }
+  },
+  "sync": {
+    "mono": {
+      "observed": "12",
+      "switches": "733",
+      "share": "1.6%",
+      "null_mean": "16.2",
+      "interval": "9.0–23.0",
+      "ratio": "0.74",
+      "p_lower": "= 0.160",
+      "p_upper": "= 0.905",
+      "above": false,
+      "below": false
+    },
+    "poly_ab": {
+      "observed": "1",
+      "switches": "509",
+      "share": "0.2%",
+      "null_mean": "6.5",
+      "interval": "2.0–11.0",
+      "ratio": "0.16",
+      "p_lower": "= 0.007",
+      "p_upper": "= 1.000",
+      "above": false,
+      "below": true
+    },
+    "poly_fab": {
+      "observed": "8",
+      "switches": "1,142",
+      "share": "0.7%",
+      "null_mean": "22.7",
+      "interval": "14.0–32.0",
+      "ratio": "0.35",
+      "p_lower": "< 0.001",
+      "p_upper": "= 1.000",
+      "above": false,
+      "below": true
+    },
+    "poly_fm": {
+      "observed": "14",
+      "switches": "1,289",
+      "share": "1.1%",
+      "null_mean": "25.0",
+      "interval": "16.0–34.0",
+      "ratio": "0.56",
+      "p_lower": "= 0.011",
+      "p_upper": "= 0.996",
+      "above": false,
+      "below": true
+    }
+  },
+  "sync2": {
+    "mono": {
+      "observed": "195",
+      "switches": "733",
+      "share": "26.6%",
+      "null_mean": "180.5",
+      "interval": "163.0–199.0",
+      "ratio": "1.08",
+      "p_lower": "= 0.951",
+      "p_upper": "= 0.065",
+      "above": false,
+      "below": false
+    },
+    "poly_ab": {
+      "observed": "92",
+      "switches": "509",
+      "share": "18.1%",
+      "null_mean": "95.1",
+      "interval": "82.0–109.0",
+      "ratio": "0.97",
+      "p_lower": "= 0.360",
+      "p_upper": "= 0.697",
+      "above": false,
+      "below": false
+    },
+    "poly_fab": {
+      "observed": "366",
+      "switches": "1,142",
+      "share": "32.0%",
+      "null_mean": "347.4",
+      "interval": "327.0–368.0",
+      "ratio": "1.05",
+      "p_lower": "= 0.958",
+      "p_upper": "= 0.053",
+      "above": false,
+      "below": false
+    },
+    "poly_fm": {
+      "observed": "406",
+      "switches": "1,289",
+      "share": "31.5%",
+      "null_mean": "376.9",
+      "interval": "351.0–403.0",
+      "ratio": "1.08",
+      "p_lower": "= 0.987",
+      "p_upper": "= 0.017",
+      "above": true,
+      "below": false
+    }
+  },
+  "rates": {
+    "f_pair": {
+      "rate": "2.97",
+      "ci": "2.37–3.71"
+    },
+    "m_pair": {
+      "rate": "3.22",
+      "ci": "2.57–4.04"
+    },
+    "f_trio": {
+      "rate": "2.90",
+      "ci": "2.40–3.50"
+    },
+    "a_trio": {
+      "rate": "3.31",
+      "ci": "2.75–3.97"
+    },
+    "b_trio": {
+      "rate": "1.02",
+      "ci": "0.83–1.25"
+    }
+  },
+  "ihle": {
+    "mono": {
+      "among": {
+        "rr": "1.11",
+        "ci": "0.995–1.23",
+        "excludes_one": false,
+        "above_one": false
+      },
+      "simulated": {
+        "rr": "1.34",
+        "ci": "1.20–1.50",
+        "excludes_one": true,
+        "above_one": true
+      },
+      "sorted": {
+        "rr": "0.97",
+        "ci": "0.87–1.07",
+        "excludes_one": false,
+        "above_one": false
+      },
+      "switched": {
+        "rr": "1.00",
+        "ci": "0.90–1.11",
+        "excludes_one": false,
+        "above_one": false
+      },
+      "within": {
+        "rr": "1.03",
+        "ci": "0.92–1.14",
+        "excludes_one": false,
+        "above_one": false
+      }
+    },
+    "poly_ab": {
+      "among": {
+        "rr": "1.08",
+        "ci": "0.95–1.22",
+        "excludes_one": false,
+        "above_one": false
+      },
+      "simulated": {
+        "rr": "1.20",
+        "ci": "1.06–1.37",
+        "excludes_one": true,
+        "above_one": true
+      },
+      "sorted": {
+        "rr": "0.97",
+        "ci": "0.86–1.10",
+        "excludes_one": false,
+        "above_one": false
+      },
+      "switched": {
+        "rr": "1.03",
+        "ci": "0.91–1.17",
+        "excludes_one": false,
+        "above_one": false
+      },
+      "within": {
+        "rr": "1.01",
+        "ci": "0.89–1.14",
+        "excludes_one": false,
+        "above_one": false
+      }
+    },
+    "poly_fab": {
+      "among": {
+        "rr": "1.07",
+        "ci": "0.99–1.17",
+        "excludes_one": false,
+        "above_one": false
+      },
+      "simulated": {
+        "rr": "1.20",
+        "ci": "1.10–1.31",
+        "excludes_one": true,
+        "above_one": true
+      },
+      "sorted": {
+        "rr": "0.98",
+        "ci": "0.90–1.06",
+        "excludes_one": false,
+        "above_one": false
+      },
+      "switched": {
+        "rr": "1.01",
+        "ci": "0.93–1.10",
+        "excludes_one": false,
+        "above_one": false
+      },
+      "within": {
+        "rr": "1.02",
+        "ci": "0.94–1.11",
+        "excludes_one": false,
+        "above_one": false
+      }
+    },
+    "poly_fm": {
+      "among": {
+        "rr": "1.09",
+        "ci": "1.01–1.18",
+        "excludes_one": true,
+        "above_one": true
+      },
+      "simulated": {
+        "rr": "1.27",
+        "ci": "1.17–1.38",
+        "excludes_one": true,
+        "above_one": true
+      },
+      "sorted": {
+        "rr": "0.98",
+        "ci": "0.91–1.06",
+        "excludes_one": false,
+        "above_one": false
+      },
+      "switched": {
+        "rr": "1.00",
+        "ci": "0.92–1.08",
+        "excludes_one": false,
+        "above_one": false
+      },
+      "within": {
+        "rr": "1.02",
+        "ci": "0.95–1.11",
+        "excludes_one": false,
+        "above_one": false
+      }
+    }
+  },
+  "ihle_iv": {
+    "system": {
+      "rr": "1.00",
+      "ci": "0.88–1.14",
+      "excludes_one": false
+    },
+    "trio_seen": {
+      "rr": "0.98",
+      "ci": "0.83–1.15",
+      "excludes_one": false
+    }
+  },
+  "ihle_def": {
+    "lo": "0.97",
+    "hi": "1.03",
+    "all_include_one": true,
+    "all_above_one": false
+  },
+  "ihle_b": {
+    "lo": "1.20",
+    "hi": "1.34",
+    "all_include_one": false,
+    "all_above_one": true
+  },
+  "rate_contrasts": {
+    "female_trio_vs_pair": {
+      "ratio": "0.98",
+      "ci": "0.76–1.25",
+      "excludes_one": false
+    },
+    "alpha_vs_pair_male": {
+      "ratio": "1.03",
+      "ci": "0.81–1.30",
+      "excludes_one": false
+    },
+    "beta_vs_alpha": {
+      "ratio": "0.31",
+      "ci": "0.25–0.38",
+      "excludes_one": true
+    }
+  },
+  "all_fits_ok": true,
+  "n_reduced_random": "3",
+  "dispersion_range": "0.31–0.78",
+  "dharma_range": "0.94–0.98",
+  "dharma_p_max": "= 0.732",
+  "rate_family": "nbinom2",
+  "rate_delta_aic": "89.8",
+  "re_sd_max": "0.51",
+  "built": "2026-11-07"
+}

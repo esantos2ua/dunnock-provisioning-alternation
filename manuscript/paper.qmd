@@ -1,0 +1,585 @@
+---
+title: "Who's gonna feed the kids? Provisioning alternation in dunnock pairs and trios is largely explained by each parent's own visiting pattern"
+running-head: "Provisioning alternation in dunnocks"
+bibliography: references.bib
+csl: chicago-author-date-yearsuffix.csl
+citeproc: true
+format:
+  typst:
+    papersize: a4
+    margin:
+      x: 3cm
+      y: 2.5cm
+    mainfont: "Libertinus Serif"
+    fontsize: 11pt
+    section-numbering: "1."
+    fig-format: pdf
+    default-image-extension: pdf
+    keep-typ: false
+    include-in-header:
+      - text: |
+          #set par(justify: true, leading: 0.65em, spacing: 1.2em)
+          #show link: it => text(fill: rgb("#1a4f8a"), it)
+          #show ref: it => text(fill: rgb("#1a4f8a"), it)
+          #show cite: it => text(fill: rgb("#1a4f8a"), it)
+          #show figure.where(kind: table): set figure.caption(position: top)
+          #show figure.where(kind: table): set text(size: 9pt)
+  docx:
+    toc: false
+    number-sections: false
+    highlight-style: github
+    default-image-extension: png
+execute:
+  echo: false
+  warning: false
+  message: false
+---
+
+<!--
+Every number in the text is read from build/results.json, which
+analysis/06_build_results.R writes from the fitted models; nothing is typed by
+hand. Build order (repo root):
+  Rscript analysis/run_all.R
+  quarto render manuscript/paper.qmd
+The qualitative statements that depend on the results (for example "the
+interval excluded one") are checked by the `claims` chunk below, so the render
+fails if a re-run changes them.
+-->
+
+```{r}
+#| label: setup
+R <- jsonlite::read_json("../build/results.json")
+S <- R$sample
+M <- R$scen$mono; FM <- R$scen$poly_fm; FAB <- R$scen$poly_fab; AB <- R$scen$poly_ab
+or <- function(x) paste0("OR = ", x$or, ", 95% CI ", x$ci)
+orb <- function(x) paste0("OR = ", x$or, ", 95% CI ", x$ci, "; bootstrap ", x$boot_ci)
+num <- function(x) as.numeric(sub("\u2212", "-", x))
+bc <- unlist(lapply(list(M, FM, FAB, AB), function(s) c(s$nulls$simulated$or, s$nulls$among$or)))
+bc_range <- paste0(bc[which.min(num(bc))], "\u2013", bc[which.max(num(bc))])
+within_pct <- round(100 * (num(M$nulls$within$or) - 1))
+```
+
+```{r}
+#| label: claims
+# Guards for hand-written statements: the render stops if a re-run changes them
+scens <- list(M, FM, FAB, AB)
+stopifnot(
+  all(sapply(scens, function(s) s$nulls$simulated$above_one && s$nulls$among$above_one)),
+  all(sapply(scens, function(s) !s$nulls$switched$excludes_one && !s$nulls$sorted$excludes_one)),
+  all(sapply(list(FM, FAB, AB), function(s) !s$nulls$within$excludes_one)),
+  !M$nulls$within$excludes_one, M$nulls$within$boot_excludes_one,
+  AB$nulls$switched$boot_excludes_one,
+  !R$system$observed$excludes_one, !R$system$excess$excludes_one,
+  !R$system$seen_observed$excludes_one, !R$system$seen_excess$excludes_one,
+  !R$carers$observed$excludes_one, !R$carers$excess$excludes_one,
+  R$span_b$mono$above_one, R$span_b$poly_fm$above_one,
+  !R$rate_contrasts$female_trio_vs_pair$excludes_one,
+  !R$rate_contrasts$alpha_vs_pair_male$excludes_one,
+  R$rate_family == "nbinom2", R$all_fits_ok, R$n_reduced_random != "0",
+  R$rate_contrasts$beta_vs_alpha$excludes_one,
+  # "about three quarters", "about a third", "about half", "about a third", "rarer still"
+  all(sapply(list(M, FM, FAB), function(s) abs(num(sub("%", "", s$rate)) - 75) < 3)),
+  abs(num(R$rate_contrasts$beta_vs_alpha$ratio) - 1/3) < 0.06,
+  abs(num(R$sync$poly_fm$ratio) - 0.5) < 0.1, abs(num(R$sync$poly_fab$ratio) - 1/3) < 0.06,
+  num(R$sync$poly_ab$ratio) < num(R$sync$poly_fab$ratio),
+  # Ihle et al. models and 2-min synchrony statements
+  R$ihle_def$all_include_one, R$ihle_b$all_above_one,
+  R$ihle$poly_fm$among$above_one,
+  !R$ihle$mono$among$excludes_one, !R$ihle$poly_fab$among$excludes_one, !R$ihle$poly_ab$among$excludes_one,
+  !R$ihle_iv$system$excludes_one,
+  R$sync2$poly_fm$above, !R$sync2$mono$above, !R$sync2$poly_fab$above, !R$sync2$poly_ab$above,
+  !any(sapply(R$sync2, `[[`, "below")),
+  R$dyad_def$all_include_one, R$dyads_obs[["a>a"]]$rand_below, !R$dyads$within[["a>a"]]$excludes_one,
+  sum(sapply(R$dyads_obs, `[[`, "rand_below")) + sum(sapply(R$dyads_obs, `[[`, "rand_above")) == 1,
+  R$cv_all_include_zero,
+  R$brood_sum$none_excludes, R$brood_sum$rate_above,
+  num(R$brood_sum$rate_max) / num(R$brood_sum$rate_1) > 2,
+  all(num(c(R$cv_role$monogamous_f$median, R$cv_role$polyandrous_f$median)) >
+      max(num(c(R$cv_role$monogamous_a$median, R$cv_role$polyandrous_a$median, R$cv_role$polyandrous_b$median)))),
+  R$sync$poly_fm$below, R$sync$poly_fab$below, R$sync$poly_ab$below, !R$sync$mono$below,
+  # Primary rule, males, sensitivity, synchrony, pseudo-pairs, power
+  !AB$nulls$within$boot_excludes_one, !AB$nulls$sorted$boot_excludes_one,
+  !FM$nulls$within$boot_excludes_one, !FAB$nulls$within$boot_excludes_one,
+  num(M$nulls$among$pp) < num(M$nulls$simulated$pp),
+  R$no_overflow$mono$boot_above_one, !R$no_overflow$poly_fm$boot_excludes_one,
+  R$sync_holm$S$poly_fab$sig, !R$sync_holm$S$poly_fm$sig, !R$sync_holm$S$poly_ab$sig, !R$sync_holm$S$mono$sig,
+  !any(sapply(R$sync_holm$S2, `[[`, "sig")),
+  R$sync_boot$S$poly_fm$below, R$sync_boot$S$poly_fab$below, R$sync_boot$S$poly_ab$below,
+  !R$sync_boot$S$mono$excludes_one, !R$sync_boot$S$system$excludes_one, !R$sync_boot$S2$system$excludes_one,
+  !R$pseudo$difference$excludes_one,
+  !R$pseudo$pseudo$switched$boot_excludes_one, !R$pseudo$pseudo$sorted$boot_excludes_one,
+  !R$pseudo$real$switched$boot_excludes_one, !R$pseudo$real$sorted$boot_excludes_one,
+  num(R$pseudo$pseudo$within$pp) > 0,
+  abs(num(sub("%", "", R$pseudo$pseudo$within$observed)) - num(sub("%", "", M$rate))) < 5,
+  num(R$system$pp_ci_lo) < 0, num(R$system$pp_ci_hi) > 0, abs(num(R$system$pp_ci_lo)) < 10,
+  R$power$mono$within$type1_raw < 0.06,
+  R$power$mono$within$pp80_raw < R$power$mono$switched$pp80_raw,
+  R$power$mono$switched$pp80_raw < R$power$mono$sorted$pp80_raw,
+  num(M$nulls$within$pp) <= R$power$mono$within$pp80_raw + 0.5,
+  num(FAB$nulls$within$pp) <= R$power$poly_fab$within$pp80_raw,
+  R$power$poly_ab$switched$type1_raw > 0.05,
+  # Sample sizes and flagged watches
+  num(S$watches_age8) + num(S$watches_age9) == num(S$watches),
+  num(S$flagged_roster) + num(S$flagged_order) == num(S$flagged),
+  S$brood_mode == "3"
+)
+```
+
+::: {.content-visible when-format="typst"}
+```{=typst}
+#align(center)[
+  #text(size: 11pt)[
+    Ingrid P. Paschoaletto#super[1], Benedikt Holtmann#super[2], Carlos E. Lara#super[3], Shinichi Nakagawa#super[4] and Eduardo S. A. Santos#super[4]#footnote(numbering: "*")[Corresponding author: #link("mailto:esantos2@ualberta.ca")[esantos2\@ualberta.ca]. ORCID: Benedikt Holtmann, #link("https://orcid.org/0000-0002-2995-7274")[0000-0002-2995-7274]\; Carlos E. Lara, #link("https://orcid.org/0000-0001-5425-0935")[0000-0001-5425-0935]\; Eduardo S. A. Santos, #link("https://orcid.org/0000-0002-0434-3655")[0000-0002-0434-3655]]
+  ]
+  #v(0.3em)
+  #text(size: 9pt, fill: rgb("#555555"))[
+    #super[1]Instituto de Biociências, Universidade de São Paulo, São Paulo, Brazil \
+    #super[2]Department of Zoology, University of Otago, Dunedin, New Zealand \
+    #super[3]Dirección Académica, Universidad Nacional de Colombia, La Paz, Colombia \
+    #super[4]COSSEE, Collaboration for Open Science and Synthesis in Ecology and Evolution, \
+    Department of Biological Sciences, University of Alberta, Edmonton, AB, Canada
+  ]
+  #v(0.3em)
+  #text(size: 9pt)[*Keywords:* parental care, turn-taking, alternation, null models, polyandry, _Prunella modularis_]
+]
+#v(0.8em)
+#line(length: 100%, stroke: 0.5pt)
+```
+:::
+
+::: {.content-visible when-format="docx"}
+**Ingrid P. Paschoaletto**^1^, **Benedikt Holtmann**^2^, **Carlos E. Lara**^3^, **Shinichi Nakagawa**^4^, and **Eduardo S. A. Santos**^4,\*^
+
+^1^ Instituto de Biociências, Universidade de São Paulo, São Paulo, Brazil  
+^2^ Department of Zoology, University of Otago, Dunedin, New Zealand  
+^3^ Dirección Académica, Universidad Nacional de Colombia, La Paz, Colombia  
+^4^ COSSEE, Collaboration for Open Science and Synthesis in Ecology and Evolution, Department of Biological Sciences, University of Alberta, Edmonton, AB, Canada  
+\* Corresponding author: [esantos2@ualberta.ca](mailto:esantos2@ualberta.ca); ORCID: Benedikt Holtmann, [0000-0002-2995-7274](https://orcid.org/0000-0002-2995-7274); Carlos E. Lara, [0000-0001-5425-0935](https://orcid.org/0000-0001-5425-0935); Eduardo S. A. Santos, [0000-0002-0434-3655](https://orcid.org/0000-0002-0434-3655)
+
+**Keywords:** parental care, turn-taking, alternation, null models, polyandry, *Prunella modularis*
+
+---
+:::
+
+# Lay summary {.unnumbered}
+
+When two or three adults raise a brood together, each would do better if the others did more of the work. Taking turns to feed the chicks has been proposed as one way in which parents keep each other honest. We filmed dunnock nests attended by pairs and by trios of one female and two males. Parents did take turns on about three quarters of the occasions they could have. However, reshuffling each bird's own intervals between visits produced almost as much turn-taking. Most of the turn-taking we saw can therefore be produced by how often and how regularly each bird visits, without the birds responding to one another. Birds from different nests filmed on the same day, which could not see each other, took turns about as often. We cannot rule out a small amount of genuine turn-taking, but we found little beyond what each bird's own visiting pattern generates, in pairs or in trios.
+
+# Abstract {.unnumbered}
+
+Theory suggests that parents sharing the care of a brood can reduce the costs of sexual conflict by conditional cooperation: each parent is more likely to return to the nest after its partner has fed the young than after its own visit, so that visits tend to alternate. Alternation, however, also arises without any response between parents, because it depends on how often and how regularly each parent visits. Whether coordination occurs when more than two adults feed the young is largely unknown. We analyzed `r S$visits` provisioning visits in `r S$watches` nest watches at `r S$nests` nests of a population of dunnocks (*Prunella modularis*) in which females breed with one male (socially monogamous pairs) or two males (socially polyandrous trios). We compared observed alternation with five null models that remove coordination while keeping, to different degrees, the visiting pattern of each bird. Parents alternated on `r M$rate` of the opportunities in pairs and `r FM$rate` in polyandrous groups. Alternation exceeded the two null models that remove each bird's own interval structure (by `r M$nulls$among$pp`–`r M$nulls$simulated$pp` percentage points in pairs), but this excess largely disappeared against the three null models that keep it. In pairs, alternation was `r M$nulls$within$pp` points above a within-bird reshuffling of intervals (`r orb(M$nulls$within)`), and `r M$nulls$switched$pp` points above a null model that also keeps the temporal order of intervals. Pseudo-pairs of birds from different nests filmed on the same day, which could not respond to each other, showed a similar excess (`r R$pseudo$pseudo$within$pp` points). Alternation between the female and the males of polyandrous groups, and among all three members of trios, did not exceed any of the three null models. Alternation did not differ detectably between pairs and polyandrous groups (`r or(R$system$observed)`), although differences of a few percentage points cannot be excluded. A power simulation showed that the analysis would have detected turn-taking that raised alternation by `r R$power$mono$within$pp80` percentage points in pairs. Carers in polyandrous groups were at the nest together less often than expected, but this did not differ detectably from pairs. Dunnock parents, whether in pairs or in trios, show little detectable coordination of their provisioning visits beyond that generated by each bird's own visiting pattern.
+
+# Introduction
+
+Parental care increases the survival of offspring at a cost to the parent's future reproduction [@Trivers1972; @Williams1966; @SantosNakagawa2012]. When two or more adults care for the same brood, they share the benefit of their joint investment but each pays the cost of its own. Each carer is therefore selected to provide less than its share and to let the others make up the difference [@Trivers1972; @Lessells2012]. How this conflict is resolved, and why shared care remains evolutionarily stable despite it, has been a central question in behavioural ecology [@Royle2012; @Harrison2009].
+
+Two classes of models describe how carers might settle their investment. In sealed-bid models, each parent's effort is a fixed response that has been tuned over evolutionary time, so that parents do not respond to each other within a breeding attempt [@HoustonDavies1985]. In negotiation models, parents adjust their effort to their partner's behaviour over a series of interactions [@McNamara1999; @LessellsMcNamara2012]. The empirical evidence that birds partially compensate for changes in their partner's effort supports some form of negotiation [@HatchwellDavies1990; @WrightDingemanse1999; @Harrison2009]. @Johnstone2014 proposed a specific rule, conditional cooperation, in which a parent waits for its partner to feed the brood before returning itself. If parents follow this rule, their visits alternate, and alternation could raise total investment towards the level that is best for both parents [@Johnstone2014]. Parents cannot monitor each other perfectly, however. A more forgiving version of the rule, in which a parent visits less often, but still visits, after its own visit than after its partner's, is evolutionarily stable. This rule produces alternation that is above chance but far from complete, and the alternation declines rapidly as monitoring becomes less accurate [@JohnstoneSavage2019]. Parents might also synchronize their visits, which could let them monitor each other directly and reduce the traffic that draws predators to the nest [@Raihani2010; @Leniowski2018; @BaldanOuyang2020].
+
+Testing for active coordination is difficult because alternation is expected even when parents ignore each other. Two birds that visit a nest independently alternate often when their visit rates are similar, when each visits at regular intervals, or when both change their rates together in response to weather, food or the needs of the brood [@Schlicht2016; @Ihle2019; @BaldanHindeLessells2019]. A high alternation rate is therefore not evidence of coordination by itself; observed alternation has to be compared with the alternation expected in the absence of coordination. @Ihle2019 showed that this conclusion depends on which null model is used to build that expectation (@tbl-nulls). Null models that simulate visits as a Poisson process, or that reshuffle intervals among unrelated nests, remove properties of the real data such as refractory periods and individual regularity. They then underestimate the alternation expected without coordination, making observed alternation look like coordination when it is not. @Santema2019 went further, arguing that because parents respond to the same external stimuli, it may be impossible to show from observational data alone that they respond to each other. @BaldanHindeLessells2019 used pseudo-pairs, formed by combining the visit sequences of parents at different nests, to show that part of the alternation above chance in great tits (*Parus major*) comes from environmental variation shared across nests. Whether alternation matters for fitness is also unresolved. Apparent coordination did not improve rearing success in house sparrows (*Passer domesticus*) [@Ihle2019b], whereas alternation has been linked to chick condition or recruitment in cooperative breeders [@Trapote2024; @Halliwell2024].
+
+Almost all of this work has been done on pairs of parents. Many birds, however, raise young in groups in which more than two adults feed the brood [@Cockburn2006; @Savage2017]. In such groups, conditional cooperation could operate between every pair of carers, between the sexes, or not at all. Studies of cooperative breeders define an alternated visit as one that follows a visit by any other carer, and compare observed alternation with that expected from randomized sequences, although they differ in which properties of the visit sequences their null models control for (@tbl-nulls). In long-tailed tits (*Aegithalos caudatus*), in which breeders are often joined by related helpers, active alternation declined as the number of carers increased, whereas active synchrony did not [@Halliwell2022]. In chestnut-crowned babblers (*Pomatostomus ruficeps*) it did not change with group size [@Savage2017]. In carrion crows (*Corvus corone*) it exceeded chance in groups of every size [@Trapote2024]. In long-tailed tits, carers that had fed last waited near the nest until another carer had fed, suggesting a behavioural mechanism by which alternation could be produced actively [@Halliwell2023]. Where helpers are relatives of the brood, as is typical of long-tailed tits [@Halliwell2022], carers share much of their interest in the brood. In polyandrous mating systems, by contrast, the additional carer is an unrelated male that competes for paternity, so the conflict of interest among carers is greater. The hypothesis that alternation resolves conflict over care then predicts more coordination, not less [@Johnstone2014; @Halliwell2024]. The dunnock (*Prunella modularis*) offers a natural contrast. In a single population, some females breed with one male and others with two, an alpha and a beta, both of which may feed the young [@HoustonDavies1985; @HatchwellDavies1990; @SantosNakagawa2013]. Each male's share of paternity, and thus his benefit from caring, differs between these groups [@WhittinghamDunn1998; @SantosNakagawa2017]. More carers could make coordination more valuable, because predators are drawn by nest traffic, or harder, because each carer has more partners to track.
+
+Here we ask whether dunnock parents in socially monogamous pairs and socially polyandrous trios alternate their provisioning visits more than their own visiting patterns would produce. We compare observed alternation with the five null models of @Ihle2019 (@tbl-nulls). We measure alternation between the sexes, among all three members of trios, and, separately, between the two males. We also ask whether alternation differs between pairs and trios, and whether synchronized visits are more common than expected. We analyze the data both with binomial GLMMs that account for the maximum possible alternation in each watch and with the stacked Poisson GLMMs of @Ihle2019, so that the results can be compared directly with other studies.
+
+# Methods
+
+## Study population and nest watches
+
+We studied an introduced, resident population of dunnocks in the Dunedin Botanic Garden, Dunedin, New Zealand (45.857°S, 170.521°E), over `r S$seasons` breeding seasons between November 2009 and February 2016 [@SantosNakagawa2013; @Santos2015; @Holtmann2016; @Holtmann2017; @Lara2020; @Holtmann2022]. Adults were individually marked with a metal ring and a unique combination of colour rings, and breeding groups were identified by observation early in each breeding season (October to January). We classified each group by its social mating system: socially monogamous (one female and one male) or socially polyandrous (one female, an alpha male and a beta male). Brood size in the study watches ranged from `r S$brood_range` chicks (mode `r S$brood_mode`, with `r S$chicks_range` chicks present at the watch), and chicks fledge at 11–13 days [@SantosNakagawa2013; @Lara2020; @Holtmann2022].
+
+Nests were filmed in the morning on several days during the nestling period [@Holtmann2022]; the data set compiled for this study uses the watches on two consecutive days when chicks were `r S$chick_age` days old (`r S$watches_age8` and `r S$watches_age9` watches, respectively), when provisioning is frequent and brooding rare [@Iserbyt2017]. The identity of the provisioning bird and the times of its arrival and departure were recorded for every visit. Visits during which a bird brooded, visits by unidentified birds, and nests with unringed parents were excluded when the data were first compiled in 2020. The raw records from which these exclusions were made are no longer available, so we used the data as compiled and cannot report how many visits were excluded or distinguish whether excluded brooding visits were brooding-only or also included visits in which a bird fed the chicks before brooding. Removing a visit from the middle of a sequence can create or remove an alternation; we return to this in the Discussion. The final data set contains `r S$visits` provisioning visits in `r S$watches` nest watches at `r S$nests` nests (`r S$nests_mono` monogamous, `r S$nests_poly` polyandrous), involving `r S$females` females and `r S$males` males. Effective watch duration (measured from the first visit to the end of the video; @Holtmann2022) had a median of `r S$duration_median_min` min (range `r S$duration_range_min` min). In `r S$overflow_watches` watches, the span from first arrival to last departure exceeded the recorded watch duration because of a transcription error in a visit timestamp or in the recorded duration; for these watches we used the visit span as the duration and verified in a sensitivity analysis below that excluding them did not change the results.
+
+Research was conducted under approval from the Animal Ethics Committee of the University of Otago (permits 08/09, 49/12, and 89/14) and New Zealand National Bird Banding Scheme permit 2008/075. Fieldwork was authorized by the New Zealand Department of Conservation (High Impact Collection Permit 36716-FAU) and the Dunedin City Council for access to the Dunedin Botanic Garden.
+
+## Alternation scenarios
+
+We treated each nest watch as an ordered sequence of visits. An alternation is a visit made by a different individual, or by a carer of a different class (where the two males of a polyandrous group form a single male class in the female–male comparison), from the one that made the previous visit. The maximum possible number of alternations in a watch, $A_\text{max}$, depends only on how many visits each carer (or class) made. For two carers, $A_\text{max}$ is $P_T - 1$ when the two visit equally often (or differ by one visit), and twice the visits of the less active carer, $2(P_T - P_\text{max})$, when one carer makes more than half of the visits [@Ihle2019], where $P_T$ is the total number of visits and $P_\text{max}$ is the number of visits by the most active carer. The same bound, $A_\text{max} = \min(P_T - 1, \, 2(P_T - P_\text{max}))$, holds for any number of carers (proof in Appendix A) and underlies the "maximum possible coordination" of @Halliwell2022 [@Halliwell2024]. The alternation rate of a watch is $A/A_\text{max}$.
+
+We analyzed four scenarios (@tbl-scenarios):
+
+- In monogamous pairs, alternation between the female and the male (`r S$scenario_n$mono` watches in which both parents visited).
+- In polyandrous groups, female vs males, alternation between the female and any male (`r S$scenario_n$poly_fm` watches in which the female and at least one male visited). This scenario is directly comparable with the pairs. In `r S$poly_one_male` of these watches only one of the two males visited.
+- In polyandrous trios, among individuals, alternation among all three birds, where an alternated visit is one that follows a visit by any other carer [as in @Halliwell2022] (`r S$scenario_n$poly_fab` watches in which all three visited).
+- In polyandrous groups, alpha vs beta, alternation between the two males in the sequence of male visits, ignoring the female's visits (`r S$scenario_n$poly_ab` watches in which both males visited).
+
+We excluded the `r S$single_visitor` watches in which only one bird visited, since they contain no opportunity to alternate.
+
+## Null models
+
+For each scenario we built five null data sets that remove any response of one carer to another, following @Ihle2019 (@tbl-nulls). Each preserves a different set of the properties of the real data, so each defines a different expectation for alternation without coordination. We name them by what they keep rather than calling any of them "chance".
+
+::: {#tbl-nulls}
+
+```{r}
+#| output: asis
+null_rows <- list(
+  c("Simulated (B)",
+    "Independent Poisson processes over the watch duration; rates drawn from a role-specific lognormal distribution",
+    "Mean and variance of visit rates by carer role",
+    "Refractory period, individual regularity, temporal trends and between-carer responses",
+    "Ihle et al. (2019a); Pick et al. (2023)"),
+  c("Among watches (C)",
+    "Keeps first arrival; replaces intervals with intervals from carers of the same role and integer visit rate across watches",
+    "Population interval distribution and refractory period for a given rate",
+    "Individual regularity, temporal trends and between-carer responses",
+    "Bebbington & Hatchwell (2016); Ihle et al. (2019a)"),
+  c("Within watch (D)",
+    "Keeps first arrival; reshuffles each carer's own intervals within the watch",
+    "Each carer's exact intervals, visit rate, regularity and refractory period",
+    "Temporal order of intervals and between-carer responses",
+    "Johnstone et al. (2014); Savage et al. (2017); Ihle et al. (2019a); Halliwell et al. (2022); Trapote et al. (2024)"),
+  c("Switched (E)",
+    "Swaps consecutive intervals in pairs for one randomly chosen carer per watch",
+    "As D, plus coarse-scale temporal autocorrelation and shared rate trends",
+    "Fine-scale visit-by-visit responses (retains part of any interval structure created by coordination)",
+    "Ihle et al. (2019a)"),
+  c("Sorted (F)",
+    "Sorts each carer's intervals within the watch from shortest to longest",
+    "As D, plus the strongest possible shared trend in visit rate (upper bound)",
+    "Fine-scale responses (imposes maximal shared rate trend)",
+    "Ihle et al. (2019a)")
+)
+if (identical(knitr::pandoc_to(), "typst")) {
+  body <- vapply(null_rows, function(r) {
+    paste0(paste0("[", r, "]", collapse = ", "), ",")
+  }, "")
+  cat("```{=typst}",
+      "#set text(size: 8pt)",
+      "#table(columns: (auto, 1.3fr, 1.1fr, 1.1fr, 1fr), align: (left, left, left, left, left), stroke: none,",
+      "  inset: (x: 4pt, y: 2.8pt),",
+      "  table.hline(stroke: 0.8pt),",
+      "  table.header([*Null model*], [*Construction*], [*Preserves*], [*Removes*], [*Examples*]),",
+      "  table.hline(stroke: 0.5pt),",
+      paste0("  ", body),
+      "  table.hline(stroke: 0.8pt),",
+      ")", "```", sep = "\n")
+} else {
+  tbl_md <- vapply(null_rows, function(r) paste0("| ", paste(r, collapse = " | "), " |"), "")
+  cat(c("| Null model | Construction | Preserves | Removes | Examples |",
+        "|:---|:---|:---|:---|:---|",
+        tbl_md), sep = "\n")
+}
+```
+
+Summary of the five null models (B–F) compared with the observed visit sequences (A), ordered from least to most conservative [@Johnstone2014; @Bebbington2016; @Savage2017; @Ihle2019; @Halliwell2022; @Pick2023; @Trapote2024].
+
+:::
+
+**Simulated (B).** For every observed watch, we simulated the same carers visiting independently as Poisson processes over the watch's duration. Each carer's expected rate was drawn from a lognormal distribution whose mean and variance matched those of the observed rates of carers in the same role (female, alpha or beta male). The variance was corrected for the Poisson sampling variance of an observed rate [@Ihle2019; @Pick2023]. Simulated carers that made no visit were redrawn, because every carer in the observed watches visited at least once. This null model keeps nothing of the real interval structure. In particular it has no refractory period, which makes it a lower bound for the alternation expected without coordination [@Ihle2019].
+
+**Among watches (C).** We kept each carer's first arrival and replaced its subsequent intervals with intervals drawn, without replacement, from all carers of the same role that visited at the same whole number of visits per hour, pooled across watches [@Bebbington2016]. This preserves the distribution of intervals for a given rate, but not each individual's own regularity; at least `r S$among_pooled_pct` of the carers shared their rate class with a carer from another watch.
+
+**Within watch (D).** We reshuffled each carer's own intervals within the watch [@Johnstone2014]. This keeps each individual's intervals, including any refractory period, but removes their temporal order.
+
+**Switched (E).** In one randomly chosen carer per watch, we swapped consecutive intervals in pairs, leaving the other carers unchanged. This keeps most of the temporal autocorrelation within individuals, and the correlation between carers' changes in rate, while removing fine-scale responses [@Ihle2019]. Because it keeps the order of intervals, it also keeps part of any interval structure that a response to other carers would itself create.
+
+**Sorted (F).** We sorted each carer's intervals from shortest to longest. This imposes the strongest possible shared trend in visit rate. It shows how much alternation temporal autocorrelation alone could generate [@Ihle2019], and so serves as an upper bound: observed alternation below this null model is uninformative about coordination.
+
+Data sets B–E were generated `r S$n_iter` times for each watch. Data set F is deterministic.
+
+## Statistical analysis
+
+### Observed vs null alternation
+
+We tested observed alternation against all five null models (@tbl-nulls). Our primary test for coordination is the comparison of observed alternation with the within-watch null model (D), judged by whether the 95% nest-level bootstrap confidence interval for the odds ratio excludes one (below). The within-watch model (D) keeps each carer's own intervals—and therefore its visit rate, regularity and refractory period—while removing their temporal order, so it does not absorb interval structure that coordination itself might create. Comparisons with the switched (E) and sorted (F) null models, the GLMM Wald intervals, the pooled randomization tests and the stacked Poisson GLMMs of @Ihle2019 serve as robustness checks; where they disagree with the primary test, we report both.
+
+For each scenario and null model, we fitted a binomial generalized linear mixed model (GLMM) to the observed alternation. Each watch contributed $A$ successes out of $A_\text{max}$ trials. The model had an intercept only, and an offset equal to the logit of that watch's expected alternation rate under the null model (the mean across iterations, with a continuity correction of 0.5/1). The intercept is thus the log odds ratio (OR) of observed to null-expected alternation. An OR above one indicates more alternation than the null model predicts. The models included random intercepts for nest, female, alpha male and season. Random-effect variances were small (largest SD `r R$re_sd_max` on the logit scale), and several were estimated at zero. Where a variance at the boundary left the Hessian non-positive-definite (`r R$n_reduced_random` of 20 models), we refitted with nest as the only random effect, or with none. Simulation-based residual checks showed no over- or underdispersion (DHARMa dispersion ratios `r R$dharma_range`, all *p* `r R$dharma_p_max` or larger) [@Hartig2026]. We also computed 95% percentile intervals from 2,000 bootstrap resamples of nests (binomial GLM with the same offset). These intervals account directly for the non-independence of watches at the same nest and are the basis of the primary test. To make effect sizes comparable across models, we also report differences between observed and null-expected alternation in percentage points. As a population-level check, we compared the observed pooled alternation rate ($\sum A / \sum A_\text{max}$) with its distribution across the `r S$n_iter` null iterations.
+
+### Mating systems, trio dyads, regularity and brood size
+
+To compare mating systems, we fitted the same binomial GLMM to the female–male alternation of pairs and polyandrous groups together, with social mating system as a fixed effect. We fitted it once without an offset (observed alternation) and once with the within-watch null model (D) as offset (alternation in excess of D). Within polyandrous groups, we tested whether alternation depended on whether both males visited during the watch. Because a non-significant difference is not evidence of no difference, we report the range of differences, in percentage points at the rate of the pairs, that the 95% CI of the mating-system effect leaves open.
+
+To ask whether particular carers in trios responded to particular others, we counted each directed transition between carers. For example, F→α is a visit by the alpha male that follows a visit by the female. We included repeat visits by the same carer (for example α→α). Studies of cooperative breeders have analyzed alternation by carer class in a similar way [@Savage2017; @Halliwell2022; @Trapote2024]. For each transition, we compared the observed count with its expectation under the within-watch (D), switched (E) and sorted (F) null models. We used a Poisson GLMM with the log of the expected count in each watch as offset and a random intercept for nest, and also a pooled randomization test.
+
+The ability of randomization null models to break up coordination declines as each carer's intervals become more regular [@Halliwell2024]. We therefore computed the coefficient of variation (CV) of each carer's intervals in each watch (carers with at least two intervals). We then tested whether alternation in excess of the within-watch null model (D) depended on the mean CV of the watch's carers (binomial GLMM as above, with the standardized mean CV as a covariate).
+
+Brood size could affect alternation through workload [@Baldan2019workload]. Because it also raises provisioning rate, however, it can produce spurious effects on raw alternation [@Ihle2019]. We therefore tested whether the number of chicks present at the watch predicted observed alternation, and alternation in excess of the within-watch null model (D), using the binomial GLMMs above with the standardized number of chicks as a covariate. We also fitted model iv of @Ihle2019 with data set × number of chicks. To confirm that workload varied with brood size, we modelled the total number of visits per watch with a negative binomial GLMM (offset log watch duration; random intercepts for nest and season).
+
+To check that our conclusions did not depend on using binomial GLMMs bounded by $A_\text{max}$, we also fitted the stacked Poisson GLMMs of @Ihle2019. For each scenario, we stacked the observed data set and the five null data sets. Each null model was summarized by the per-watch median of its iterations, rounded to an integer at random when the median fell on a half. We then modelled the number of alternations with a Poisson GLMM, with data set as a fixed effect and a random intercept for watch. The exponentiated contrasts are rate ratios (RR) of observed to null alternation. For the comparison of mating systems we used the model that @Ihle2019 found free of false positives in their simulations. This model stacks the observed and within-watch null (D) data sets, with data set × mating system as fixed effects and random intercepts for watch, nest, female, alpha male, season and observation. The interaction measures whether alternation relative to the null model differs between systems.
+
+### Synchrony and provisioning rates
+
+We scored synchrony in two ways, with the same definitions for observed and null data. Following @Ihle2019 and @Halliwell2022, a synchronous visit was an alternated visit whose arrival fell within 2 min of the previous arrival [@Bebbington2016]. Because provisioning visits are brief, a carer can arrive within 2 min of the previous arrival after the first carer has already left the nest, so a 2-min window does not show whether two carers were at the nest together. We therefore also counted arrivals made while a carer of another class (or another individual in the three-bird scenario) was still at the nest (presence overlap). We compared each observed count with its distribution under the within-watch null model (D), in which each visit keeps its duration, and adjusted the resulting eight two-sided *p*-values (four scenarios, two measures) with the Holm method. Because these pooled tests ignore the non-independence of watches at the same nest, we also estimated the ratio of observed to expected synchrony with a nest-level bootstrap. To test directly whether synchrony differed between pairs and polyandrous groups, we bootstrapped the ratio of these two ratios (female–male synchrony).
+
+Finally, we compared provisioning rates among carers with a negative binomial GLMM (`nbinom2`, preferred over a Poisson model by `r R$rate_delta_aic` AIC units). The response was the number of visits by each carer in each watch, including zeros for group members that did not visit. The model had carer type (female, pair; male, pair; female, trio; alpha male, trio; beta male, trio) as a fixed effect, log watch duration as an offset, and random intercepts for individual, watch, nest and season.
+
+### Power simulation, pseudo-pairs and sensitivity analyses
+
+To test whether the analysis could detect coordination if it were present, we ran a power simulation. Each simulated data set started from the observed watches of a scenario with each carer's intervals reshuffled within the watch, the generating process of the within-watch null model (D). This keeps the real numbers of watches and visits, the visit rates and the interval distributions, but contains no response between carers. We then added a simulated turn-taking rule. Visits were replayed in time order, and whenever a carer's next visit would have repeated the class of the previous visit, the carer waited, with probability *p*, until 0.5–2 min after the next arrival of a carer of another class, then resumed its own intervals. We used *p* from 0 to `r R$power_meta$p_max` and `r R$power_meta$n_rep` data sets for each value and scenario. For each data set we ran the within-watch (D), switched (E) and sorted (F) null models (100 iterations each for D and E) and applied the primary test (500 nest-level bootstrap resamples). We report the proportion of data sets in which the bootstrap interval excluded one (power), against the increase in alternation that the rule produced, in percentage points.
+
+To ask whether environmental variation shared among nests could produce the alternation we observed, we formed pseudo-pairs [@BaldanHindeLessells2019]. For every two nests filmed on the same date, we combined the female's visits at one nest with the alpha (or only) male's visits at the other, aligned on the time since filming began (clock times were not recorded), and cut to the shorter of the two watches. These birds cannot respond to each other, but they share the weather, the date and the time since the camera was set up. We compared pseudo-pairs with the real female–alpha male pairs of the same watches, against the within-watch (D), switched (E) and sorted (F) null models, using bootstrap resamples of filming dates because each watch contributes to several pseudo-pairs.
+
+We ran four sensitivity analyses. (i) We classified watches by the number of carers that visited rather than by social mating system, so that watches from polyandrous groups in which only one male visited were grouped with the pairs. (ii) We dropped `r S$flagged` watches flagged during data auditing (`r S$flagged_roster` in which a visitor's recorded colour-ring combination did not match the nest roster and `r S$flagged_order` in which a visit timestamp was recorded out of chronological order). (iii) We used the span from first to last arrival as the watch duration in the simulated null model (B). (iv) We dropped the `r S$overflow_watches` watches whose visits ran past the recorded watch duration. Analyses were run in R `r paste(R.version$major, R.version$minor, sep = ".")` [@RCoreTeam2026] with glmmTMB [@Brooks2017] and DHARMa [@Hartig2026]. The data and code, including unit tests of the alternation metrics and null models, are openly available on GitHub (<https://github.com/esantos2ua/dunnock-provisioning-alternation>).
+
+# Results
+
+Carers alternated on most of the opportunities they had: `r M$rate` (95% CI `r M$ci`%) in monogamous pairs and `r FM$rate` (`r FM$ci`%) between the female and males of polyandrous groups (@tbl-scenarios; @fig-null). Among all three members of trios the rate was `r FAB$rate` (`r FAB$ci`%), and between the two males `r AB$rate` (`r AB$ci`%).
+
+::: {#tbl-scenarios}
+
+```{r}
+#| output: asis
+nl <- c(simulated = "Simulated (B)", among = "Among watches (C)", within = "Within watch (D)",
+        switched = "Switched (E)", sorted = "Sorted (F)")
+lab <- c("Pairs, female vs male", "Polyandrous groups, female vs males",
+         "Trios, among individuals", "Polyandrous groups, alpha vs beta")
+if (identical(knitr::pandoc_to(), "typst")) {
+  cell <- function(x) paste0("[", x, "]")
+  rows <- unlist(lapply(seq_along(scens), function(i) {
+    s <- scens[[i]]
+    c(sprintf("table.cell(colspan: 6)[_%s (%s watches)_],", lab[i], s$n),
+      paste0(paste(cell(c("Observed (A)", s$rate, s$ci, "", "", "")), collapse = ", "), ","),
+      vapply(names(nl), function(k) {
+        n <- s$nulls[[k]]
+        paste0(paste(cell(c(nl[[k]], n$rate, if (k == "sorted") "" else n$interval,
+                            n$or, n$ci, n$boot_ci)), collapse = ", "), ",")
+      }, ""))
+  }))
+  cat("```{=typst}",
+      "#table(columns: 6, align: (left, right, right, right, right, right), stroke: none,",
+      "  inset: (x: 5pt, y: 2.4pt),",
+      "  table.hline(stroke: 0.8pt),",
+      "  table.header([*Data set*], [*Rate*], [*Interval*], [*OR*], [*Wald CI*], [*Bootstrap CI*]),",
+      "  table.hline(stroke: 0.5pt),",
+      paste0("  ", rows),
+      "  table.hline(stroke: 0.8pt),",
+      ")", "```", sep = "\n")
+} else {
+  tbl_rows <- unlist(lapply(seq_along(scens), function(i) {
+    s <- scens[[i]]
+    c(sprintf("| **_%s (%s watches)_** | | | | | |", lab[i], s$n),
+      sprintf("| Observed (A) | %s | %s | | | |", s$rate, s$ci),
+      vapply(names(nl), function(k) {
+        n <- s$nulls[[k]]
+        sprintf("| %s | %s | %s | %s | %s | %s |",
+                nl[[k]], n$rate, if (k == "sorted") "" else n$interval,
+                n$or, n$ci, n$boot_ci)
+      }, ""))
+  }))
+  cat(c("| Data set | Rate | Interval | OR | Wald CI | Bootstrap CI |",
+        "|:---|---:|---:|---:|---:|---:|",
+        tbl_rows), sep = "\n")
+}
+```
+
+Observed alternation and alternation expected under each null model. Rates are pooled over watches (Σ*A* / Σ*A*~max~). The interval is a watch-level bootstrap for observed data and the 2.5–97.5% range across iterations for null models B–E (the sorted null model F is deterministic). OR is the odds ratio of observed to null-expected alternation, with the 95% Wald CI from the binomial GLMM and the 95% nest-level bootstrap interval.
+
+:::
+
+![Alternation rates in the observed data (A, coloured) and under the five null models (B–F, grey), for each scenario. Dots are pooled rates; lines show the watch-level bootstrap 95% CI for observed data and the 2.5–97.5% range across `r S$n_iter` iterations for null models B–E. The sorted null model (F) is deterministic. The dashed line marks the observed rate.](figures/fig1_observed_vs_null){#fig-null width="100%"}
+
+Observed alternation exceeded the two null models that remove each carer's own interval structure, in every scenario (@fig-or). Against the simulated null model (B), the OR was `r M$nulls$simulated$or` (`r M$nulls$simulated$ci`) in pairs and `r FM$nulls$simulated$or` (`r FM$nulls$simulated$ci`) in polyandrous groups. Against the among-watch null model (C), the OR was `r M$nulls$among$or` (`r M$nulls$among$ci`) in pairs and `r FM$nulls$among$or` (`r FM$nulls$among$ci`) in polyandrous groups. This excess was at least as large between the two males (simulated, B: `r AB$nulls$simulated$or`; among-watch, C: `r AB$nulls$among$or`) as between the sexes.
+
+![Odds ratios of observed to null-expected alternation (binomial GLMM, 95% Wald CI) for each null model and scenario. Values above one indicate more alternation than the null model predicts.](figures/fig2_odds_ratios){#fig-or width="100%"}
+
+Against the three null models that keep each carer's own intervals, observed alternation was close to expectation. Under the primary test, pairs showed a small excess over the within-watch null model (D; `r orb(M$nulls$within)`; randomization test *p* `r M$nulls$within$p`), of `r M$nulls$within$pp` percentage points (`r M$rate` observed vs `r M$nulls$within$rate` expected); the Wald interval included one. Pairs did not exceed the switched (E; `r orb(M$nulls$switched)`) or sorted (F; `r orb(M$nulls$sorted)`) null models, which also preserve the temporal order of intervals. In polyandrous groups, female–male alternation did not exceed any of the three null models (within-watch, D: `r or(FM$nulls$within)`; switched, E: `r or(FM$nulls$switched)`; sorted, F: `r or(FM$nulls$sorted)`). Nor did alternation among the three members of trios (within-watch, D: `r or(FAB$nulls$within)`; switched, E: `r or(FAB$nulls$switched)`; sorted, F: `r or(FAB$nulls$sorted)`). In polyandrous groups the excess over the within-watch model (D) was `r FM$nulls$within$pp` percentage points between the sexes and `r FAB$nulls$within$pp` among trio members. Between the two males, observed alternation was close to the within-watch (D; `r orb(AB$nulls$within)`) and sorted (F; `r or(AB$nulls$sorted)`) null models. Alternation between the two males was slightly above the switched null model (E) in the bootstrap (`r orb(AB$nulls$switched)`; `r AB$nulls$switched$pp` percentage points), but the Wald interval included one.
+
+The stacked Poisson models of @Ihle2019 agreed for the three null models that keep each carer's intervals (@tbl-ihle). Against the within-watch (D), switched (E) and sorted (F) null models, the rate ratios of observed to null alternation ranged from `r R$ihle_def$lo` to `r R$ihle_def$hi`, and every interval included one. Observed alternation exceeded the simulated null model (B) in every scenario (RR `r R$ihle_b$lo`–`r R$ihle_b$hi`). In these Poisson models, observed alternation exceeded the among-watch null model (C) only for female–male alternation in polyandrous groups (RR `r R$ihle$poly_fm$among$rr`, 95% CI `r R$ihle$poly_fm$among$ci`).
+
+::: {#tbl-ihle}
+
+```{r}
+#| output: asis
+ih <- R$ihle
+keys <- c("mono", "poly_fm", "poly_fab", "poly_ab")
+short <- c("Pairs, F vs M", "Polyandrous, F vs M", "Trios, among", "Polyandrous, α vs β")
+if (identical(knitr::pandoc_to(), "typst")) {
+  body <- unlist(lapply(seq_along(keys), function(i) {
+    x <- ih[[keys[i]]]
+    paste0("[", short[i], "], ", paste(vapply(names(nl), function(k)
+      paste0("[", x[[k]]$rr, " (", x[[k]]$ci, ")]"), ""), collapse = ", "), ",")
+  }))
+  cat("```{=typst}",
+      "#set text(size: 8pt)",
+      "#table(columns: (auto, 1fr, 1fr, 1fr, 1fr, 1fr), align: (left, right, right, right, right, right), stroke: none,",
+      "  inset: (x: 3pt, y: 2.4pt),",
+      "  table.hline(stroke: 0.8pt),",
+      "  table.header([*Scenario*], [*B*], [*C*], [*D*], [*E*], [*F*]),",
+      "  table.hline(stroke: 0.5pt),",
+      paste0("  ", body),
+      "  table.hline(stroke: 0.8pt),",
+      ")", "```", sep = "\n")
+} else {
+  tbl_rows <- vapply(seq_along(keys), function(i) {
+    x <- ih[[keys[i]]]
+    vals <- vapply(names(nl), function(k) paste0(x[[k]]$rr, " (", x[[k]]$ci, ")"), "")
+    paste0("| ", short[i], " | ", paste(vals, collapse = " | "), " |")
+  }, "")
+  cat(c("| Scenario | B | C | D | E | F |",
+        "|:---|---:|---:|---:|---:|---:|",
+        tbl_rows), sep = "\n")
+}
+```
+
+Rate ratios (95% CI) of observed to null alternation from the Poisson GLMMs of @Ihle2019, in which observed and null data sets are stacked (null models summarized by their per-watch median) with data set as a fixed effect and a random intercept for watch. B, simulated; C, among watches; D, within watch; E, switched; F, sorted.
+
+:::
+
+Within trios, no carer followed any particular other carer more or less often than expected (@tbl-dyads). Across the nine directed transitions, the rate ratios of observed to expected counts ranged from `r R$dyad_def$lo` to `r R$dyad_def$hi` under the within-watch (D) and switched (E) null models, and every interval included one. The only departure appeared in the pooled randomization test: alpha males repeated their own visits slightly less often than expected under the within-watch null model (D; `r R$dyads_obs[["a>a"]]$observed` vs `r R$dyads_obs[["a>a"]]$expected`, *p* `r R$dyads_obs[["a>a"]]$p`). The watch-level model did not support this departure (RR `r R$dyads$within[["a>a"]]$rr`, 95% CI `r R$dyads$within[["a>a"]]$ci`).
+
+::: {#tbl-dyads}
+
+```{r}
+#| output: asis
+lab_d <- c("f>f" = "F → F", "a>f" = "α → F", "b>f" = "β → F", "f>a" = "F → α", "a>a" = "α → α",
+           "b>a" = "β → α", "f>b" = "F → β", "a>b" = "α → β", "b>b" = "β → β")
+ord <- c("f>a", "f>b", "a>f", "a>b", "b>f", "b>a", "f>f", "a>a", "b>b")
+if (identical(knitr::pandoc_to(), "typst")) {
+  body <- vapply(ord, function(k) {
+    o <- R$dyads_obs[[k]]
+    cells <- c(lab_d[[k]], o$observed, o$expected,
+               vapply(c("within", "switched", "sorted"), function(n)
+                 paste0(R$dyads[[n]][[k]]$rr, " (", R$dyads[[n]][[k]]$ci, ")"), ""))
+    paste0(paste0("[", cells, "]", collapse = ", "), ",")
+  }, "")
+  cat("```{=typst}",
+      "#set text(size: 8.5pt)",
+      "#table(columns: (auto, auto, auto, 1fr, 1fr, 1fr), align: (left, right, right, right, right, right), stroke: none,",
+      "  inset: (x: 3pt, y: 2.4pt),",
+      "  table.hline(stroke: 0.8pt),",
+      "  table.header([*Transition*], [*Observed*], [*Expected (D)*], [*RR, D*], [*RR, E*], [*RR, F*]),",
+      "  table.hline(stroke: 0.5pt),",
+      paste0("  ", body),
+      "  table.hline(stroke: 0.8pt),",
+      ")", "```", sep = "\n")
+} else {
+  tbl_rows <- vapply(ord, function(k) {
+    o <- R$dyads_obs[[k]]
+    rrs <- vapply(c("within", "switched", "sorted"), function(n)
+      paste0(R$dyads[[n]][[k]]$rr, " (", R$dyads[[n]][[k]]$ci, ")"), "")
+    sprintf("| %s | %s | %s | %s | %s | %s |",
+            lab_d[[k]], o$observed, o$expected, rrs[1], rrs[2], rrs[3])
+  }, "")
+  cat(c("| Transition | Observed | Expected (D) | RR, D | RR, E | RR, F |",
+        "|:---|---:|---:|---:|---:|---:|",
+        tbl_rows), sep = "\n")
+}
+```
+
+Directed transitions between carers in trios (`r S$scenario_n$poly_fab` watches). "α → F" is a visit by the female that follows a visit by the alpha male; the last three rows are repeat visits by the same carer. Observed and expected counts are pooled over watches (expected: mean across `r S$n_iter` iterations of the within-watch null model, D). RR is the rate ratio of observed to expected counts (95% CI) from a Poisson GLMM with the log expected count per watch as offset, under the within-watch (D), switched (E) and sorted (F) null models.
+
+:::
+
+Nests with larger broods received more visits (`r R$brood_sum$rate_1` visits h^−1^ across all carers at nests with one chick vs `r R$brood_sum$rate_max` at nests with `r R$brood_sum$max_chicks`; rate ratio per SD of chick number `r R$brood_sum$rate_rr`, 95% CI `r R$brood_sum$rate_ci`), yet alternation did not change with brood size in any scenario. This held for observed alternation (pairs: `r or(R$brood$mono$obs)`), for alternation in excess of the within-watch null model (D; pairs: `r or(R$brood$mono$excess)`; polyandrous groups: `r or(R$brood$poly_fm$excess)`) and for model iv of @Ihle2019 (pairs: RR `r R$brood$mono$iv$rr`, 95% CI `r R$brood$mono$iv$ci`). Every interval, across the four scenarios, included one, with limits between `r R$brood_sum$or_lo` and `r R$brood_sum$or_hi`.
+
+Females visited less regularly than males: the median CV of intervals was `r R$cv_role$monogamous_f$median` for females in pairs and `r R$cv_role$polyandrous_f$median` in trios, against `r R$cv_role$monogamous_a$median` for males in pairs, `r R$cv_role$polyandrous_a$median` for alpha males and `r R$cv_role$polyandrous_b$median` for beta males. Alternation in excess of the within-watch null model (D) did not depend on the regularity of carers' visits in any scenario. The ORs per SD of mean CV were `r R$cv_models$mono$or` (`r R$cv_models$mono$ci`) in pairs, `r R$cv_models$poly_fm$or` (`r R$cv_models$poly_fm$ci`) for female–male alternation in polyandrous groups, `r R$cv_models$poly_fab$or` (`r R$cv_models$poly_fab$ci`) among trio members and `r R$cv_models$poly_ab$or` (`r R$cv_models$poly_ab$ci`) between males.
+
+Alternation did not differ detectably between monogamous pairs and polyandrous groups, either as observed (model estimates `r R$system$rate_mono` vs `r R$system$rate_poly`; `r or(R$system$observed)`) or in excess of the within-watch null model (D; `r or(R$system$excess)`; interaction in the model of @Ihle2019: RR `r R$ihle_iv$system$rr`, 95% CI `r R$ihle_iv$system$ci`). These intervals do not rule out modest differences: at the rate of the pairs, they correspond to differences of `r R$system$pp_ci` percentage points in observed alternation and `r R$system$pp_excess_ci` points in alternation relative to the within-watch model (D). Within polyandrous groups, alternation between the female and the males was similar whether one or both males visited during the watch (observed: `r or(R$system$seen_observed)`; excess over the within-watch model, D: `r or(R$system$seen_excess)`).
+
+Carers often arrived close together: `r R$sync2$mono$share` of female–male switches in pairs fell within 2 min of the previous arrival, compared with `r R$sync2$poly_fm$share` in polyandrous groups, `r R$sync2$poly_fab$share` of switches among trio members and `r R$sync2$poly_ab$share` of switches between the two males. These counts were close to, or slightly above, those expected under the within-watch null model (D). The excess reached *p* < 0.05 only for female–male switches in polyandrous groups (`r R$sync2$poly_fm$observed` observed vs `r R$sync2$poly_fm$null_mean` expected, *p* `r R$sync2$poly_fm$p_upper`; pairs: `r R$sync2$mono$observed` vs `r R$sync2$mono$null_mean`, *p* `r R$sync2$mono$p_upper`; trios: `r R$sync2$poly_fab$observed` vs `r R$sync2$poly_fab$null_mean`, *p* `r R$sync2$poly_fab$p_upper`; males: `r R$sync2$poly_ab$observed` vs `r R$sync2$poly_ab$null_mean`, *p* `r R$sync2$poly_ab$p_upper`). Carers were, however, rarely at the nest together. A carer arrived while a carer of the other class was still present in `r R$sync$mono$observed` of `r R$sync$mono$switches` switches in pairs (`r R$sync$mono$share`), against `r R$sync$mono$null_mean` expected (*p* `r R$sync$mono$p_lower`). In polyandrous groups, such overlap was less frequent than expected: `r R$sync$poly_fm$observed` observed vs `r R$sync$poly_fm$null_mean` expected between the female and males (*p* `r R$sync$poly_fm$p_lower`), `r R$sync$poly_fab$observed` vs `r R$sync$poly_fab$null_mean` among trio members (*p* `r R$sync$poly_fab$p_lower`), and `r R$sync$poly_ab$observed` vs `r R$sync$poly_ab$null_mean` between the two males (*p* `r R$sync$poly_ab$p_lower`). After Holm adjustment across the eight synchrony tests, only the deficit among trio members remained below 0.05 (*p* `r R$sync_holm$S$poly_fab$p`; female–male *p* `r R$sync_holm$S$poly_fm$p`; males *p* `r R$sync_holm$S$poly_ab$p`), and none of the 2-min tests did. With the nest-level bootstrap, the ratio of observed to expected overlap was `r R$sync_boot$S$mono$ratio` (95% CI `r R$sync_boot$S$mono$ci`) in pairs, `r R$sync_boot$S$poly_fm$ratio` (`r R$sync_boot$S$poly_fm$ci`) between the female and males of polyandrous groups, `r R$sync_boot$S$poly_fab$ratio` (`r R$sync_boot$S$poly_fab$ci`) among trio members and `r R$sync_boot$S$poly_ab$ratio` (`r R$sync_boot$S$poly_ab$ci`) between the males. Overlap was thus reliably below expectation in polyandrous groups but not in pairs, yet the direct comparison did not distinguish the two (ratio of ratios `r R$sync_boot$S$system$ratio`, 95% CI `r R$sync_boot$S$system$ci`; 2-min window: `r R$sync_boot$S2$system$ratio`, `r R$sync_boot$S2$system$ci`).
+
+Females visited at similar rates in pairs (`r R$rates$f_pair$rate` visits h^−1^, 95% CI `r R$rates$f_pair$ci`) and trios (`r R$rates$f_trio$rate`, `r R$rates$f_trio$ci`; ratio `r R$rate_contrasts$female_trio_vs_pair$ratio`, `r R$rate_contrasts$female_trio_vs_pair$ci`) (@fig-rates). Alpha males in trios visited at a rate similar to that of males in pairs (`r R$rates$a_trio$rate` vs `r R$rates$m_pair$rate` visits h^−1^; ratio `r R$rate_contrasts$alpha_vs_pair_male$ratio`, `r R$rate_contrasts$alpha_vs_pair_male$ci`). Beta males visited at about a third of the alpha rate (`r R$rates$b_trio$rate` visits h^−1^; ratio `r R$rate_contrasts$beta_vs_alpha$ratio`, `r R$rate_contrasts$beta_vs_alpha$ci`).
+
+![Provisioning rates by carer type. Outlined dots and capped bars are model estimates with 95% CI (negative binomial GLMM, conditional on the random effects); small dots are the rates of individual carers in each watch, including zeros for group members that did not visit. The y-axis is truncated at the 99th percentile.](figures/fig3_provisioning_rates){#fig-rates width="70%"}
+
+The analysis was able to detect turn-taking when it was present (@tbl-power). With no turn-taking added, the primary test found an excess over the within-watch null model (D) in `r R$power$mono$within$type1` of simulated data sets for pairs (nominal 2.5%). Simulated turn-taking that raised alternation by `r R$power$mono$within$pp80` percentage points in pairs was detected against the within-watch model (D) in 80% of data sets. Reaching 80% power required `r R$power$mono$switched$pp80` percentage points against the switched model (E) and `r R$power$mono$sorted$pp80` points against the sorted model (F).
+
+::: {#tbl-power}
+
+```{r}
+#| output: asis
+pw <- R$power
+lab_p <- c(mono = "Pairs, female vs male", poly_fm = "Polyandrous groups, female vs males",
+           poly_fab = "Trios, among individuals", poly_ab = "Polyandrous groups, alpha vs beta")
+if (identical(knitr::pandoc_to(), "typst")) {
+  body <- vapply(names(lab_p), function(k) {
+    x <- pw[[k]]
+    cells <- c(lab_p[[k]], x$within$type1, x$within$pp80, x$switched$pp80, x$sorted$pp80)
+    paste0(paste0("[", cells, "]", collapse = ", "), ",")
+  }, "")
+  cat("```{=typst}",
+      "#table(columns: (auto, 1fr, 1fr, 1fr, 1fr), align: (left, right, right, right, right), stroke: none,",
+      "  inset: (x: 4pt, y: 2.4pt),",
+      "  table.hline(stroke: 0.8pt),",
+      "  table.header([*Scenario*], [*False positives (D)*], [*80% power, D*], [*80% power, E*], [*80% power, F*]),",
+      "  table.hline(stroke: 0.5pt),",
+      paste0("  ", body),
+      "  table.hline(stroke: 0.8pt),",
+      ")", "```", sep = "\n")
+} else {
+  tbl_rows <- vapply(names(lab_p), function(k) {
+    x <- pw[[k]]
+    sprintf("| %s | %s | %s | %s | %s |",
+            lab_p[[k]], x$within$type1, x$within$pp80, x$switched$pp80, x$sorted$pp80)
+  }, "")
+  cat(c("| Scenario | False positives (D) | 80% power, D | 80% power, E | 80% power, F |",
+        "|:---|---:|---:|---:|---:|",
+        tbl_rows), sep = "\n")
+}
+```
+
+Power of the primary test (nest-level bootstrap interval of the OR above one) to detect simulated turn-taking, from `r R$power_meta$n_rep` simulated data sets per scenario and level. Data sets keep the observed watches, visit numbers and interval distributions, with each carer's intervals reshuffled within the watch; turn-taking is then added with probability *p* from 0 to `r R$power_meta$p_max` (see Methods). False positives: proportion of data sets without turn-taking (*p* = 0) in which the test found an excess over the within-watch null model (D). The other columns give the increase in alternation, in percentage points, at which 80% of data sets showed an excess over the within-watch (D), switched (E) and sorted (F) null models (linear interpolation between levels of *p*).
+
+:::
+
+Pseudo-pairs, formed from `r R$pseudo$n` combinations of a female and a male at different nests filmed on the same date (`r R$pseudo$n_dates` dates), alternated on `r R$pseudo$pseudo$within$observed` of their opportunities. Their excess over the within-watch null model (D; `r R$pseudo$pseudo$within$pp` percentage points; `r or(R$pseudo$pseudo$within)`; date bootstrap `r R$pseudo$pseudo$within$boot_ci`) was similar to that of the real female–alpha male pairs of the same `r R$pseudo$n_real` watches (`r R$pseudo$real$within$pp` points; `r or(R$pseudo$real$within)`; ratio of real to pseudo-pair ORs `r R$pseudo$difference$or`, 95% CI `r R$pseudo$difference$ci`). Neither real pairs nor pseudo-pairs exceeded the switched (E) or sorted (F) null models.
+
+The conclusions were unchanged in the sensitivity analyses. Grouping watches by the number of carers that visited (`r R$carers$n_mono` watches with two carers and `r R$carers$n_poly` with three), alternation again did not differ between groups (`r or(R$carers$observed)`). Against the within-watch null model (D), the two-carer watches showed the same small excess as the pairs in the main analysis (`r or(R$carers$vs_within$monogamous)`). Dropping the `r S$flagged` flagged watches left the within-watch comparison in pairs at `r or(R$no_flag$mono)`, with the lower limit just above one. Using the arrival span as the watch duration in the simulated null model (B) gave ORs of `r R$span_b$mono$or` (pairs) and `r R$span_b$poly_fm$or` (polyandrous groups), as in the main analysis. Dropping the `r S$overflow_watches` watches whose visits ran past the recorded duration left the comparison with the within-watch model (D) unchanged (pairs: `r orb(R$no_overflow$mono)`; female–male in polyandrous groups: `r orb(R$no_overflow$poly_fm)`).
+
+# Discussion
+
+Dunnock parents took turns on about three quarters of their opportunities to do so, in pairs and in trios alike. Almost all of that alternation, however, was reproduced by null models that keep each bird's own intervals between visits and remove any response to other carers. The high alternation we observed is therefore not, by itself, evidence of conditional cooperation: it can arise largely as a by-product of the rates and regularity with which each bird visits, and we found little detectable coordination beyond that.
+
+This interpretation depends on which null models serve as the baseline. Observed alternation clearly exceeded the simulated (B) and among-watch (C) null models in every scenario, and by at least as much between the two males as between the sexes. The simulated null model (B) has no refractory period, so a bird can return seconds after leaving, producing runs of visits by the same bird and lowering expected alternation. The among-watch null model (C) draws intervals from other birds with the same visit rate, removing the regularity that makes an individual's visits predictable. Both models therefore underestimate the alternation expected without coordination [@Schlicht2016; @Ihle2019]. In the stacked Poisson models of @Ihle2019, which ignore the ceiling set by $A_\text{max}$ and thus give wider intervals, the excess over the among-watch null model (C) was smaller and mostly indistinguishable from zero.
+
+## Shared rate trends and detection power
+
+Comparing observed alternation with the null models that preserve each bird's interval structure left little room for active coordination. In pairs, the odds of alternation were about `r within_pct`% higher than under the within-watch null model (D), or `r M$nulls$within$pp` percentage points in absolute terms. Although such an excess could reflect weak turn-taking, it disappeared against the switched (E) and sorted (F) null models, which also keep the temporal order of intervals and thus any trend in visit rate that the two parents share. When parents speed up and slow down together during a watch—in response to weather, food availability or the hunger of the brood—their visits alternate more often than when each parent's intervals are shuffled independently across the watch, without the parents responding to each other [@Ihle2019; @BaldanHindeLessells2019]. The pseudo-pair analysis is consistent with this mechanism: a female and a male from different nests filmed on the same day, which could not respond to each other, alternated on `r R$pseudo$pseudo$within$observed` of their opportunities, `r R$pseudo$pseudo$within$pp` percentage points above the within-watch null model (D; `r or(R$pseudo$pseudo$within)`; date bootstrap `r R$pseudo$pseudo$within$boot_ci`), and real pairs from the same watches did not exceed the within-watch model (D) by more than pseudo-pairs did (ratio of ORs `r R$pseudo$difference$or`, 95% CI `r R$pseudo$difference$ci`). Part of this shared structure may come from the filming itself, if birds at different nests resumed visiting at a similar pace after the camera was set up. Our data cannot separate a small amount of genuine turn-taking from such shared fluctuations.
+
+A key question is how much genuine coordination our analysis could have missed. In the power simulation, turn-taking that raised alternation by `r R$power$mono$within$pp80` percentage points in pairs, and by `r R$power$poly_fab$within$pp80` points among trio members, was detected against the within-watch null model (D) in 80% of data sets (@tbl-power). The excesses over the within-watch model (D) that we observed, `r M$nulls$within$pp` points in pairs and `r FAB$nulls$within$pp` among trio members, are close to or below these thresholds. The null models that preserve the temporal order of intervals—the switched (E) and sorted (F) models—are less sensitive to real turn-taking. When a carer waits for another carer to visit before returning, that delay lengthens its inter-visit interval at that point in the watch. Because the switched (E) and sorted (F) null models retain much of the sequence of short and long intervals within the watch, they carry part of the coordination signal into the null expectation itself, making genuine turn-taking harder to detect. Against the switched model (E), 80% power required `r R$power$mono$switched$pp80` percentage points in pairs, and against the sorted model (F) `r R$power$mono$sorted$pp80` points. The absence of an excess over the sorted model (F) is therefore weak evidence on its own. Overall, the analysis would have detected turn-taking of a few percentage points against the within-watch model (D) and somewhat more against the switched model (E), but could miss weaker coordination or coordination hidden in shared trends in visit rate.
+
+While our data cannot rule out weak responses between carers, they do rule out the strong coordination that the raw alternation rates would suggest. Theory does not predict strong coordination either: under imperfect monitoring, evolutionarily stable conditional rules produce only modest alternation beyond what visiting patterns alone generate, and this excess may become undetectable when parents rarely see each other's visits [@JohnstoneSavage2019].
+
+## Pairs, polyandrous trios and carer roles
+
+In polyandrous groups we found no excess over any of the three interval-preserving null models (D, E or F) for alternation between the sexes or among all three birds. Between the two males, the only departure was a small excess over the switched null model (E) in the bootstrap (`r AB$nulls$switched$pp` percentage points), which the Wald interval and the within-watch (D) and sorted (F) null models did not support. In the power simulation, the bootstrap against the switched model (E) gave false positives between the males in `r R$power$poly_ab$switched$type1` of data sets without turn-taking, above the nominal 2.5%, so this single excess is weak evidence. Nor did any carer in a trio follow a particular other carer more often than expected. In carrion crows, by contrast, carers of every class were more likely to follow another carer than to repeat their own visit [@Trapote2024]. In long-tailed tits, alternation above the within-watch null model was lower in larger breeding groups [@Halliwell2022]; in dunnocks we found at most a small excess in pairs and none in trios. @Halliwell2022 pointed out that when many carers feed the brood, even independent visits produce an expected alternation rate close to 100% (around 90% in their largest groups), leaving little room above the null expectation in which to detect active coordination. In dunnock trios, however, expected alternation under the within-watch null model (D) was `r FAB$nulls$within$rate`, well below 100%, so a ceiling effect cannot explain why we detected no coordination. Nor did the absence of an excess depend on how regularly birds visited, the other property known to limit what randomization null models can detect [@Halliwell2024]. Even an excess over all null models would not, on its own, prove conditional cooperation, because shared responses to the environment can produce it [@Santema2019; @BaldanHindeLessells2019]. Because we found no excess alternation over the null models that preserve interval order, this environmental confound does not arise here.
+
+Comparing pairs and polyandrous trios also tests how carer relatedness and sexual conflict shape provisioning behaviour. In the cooperative breeders studied so far, the additional carers are often relatives of the brood [@Halliwell2022], whereas in dunnock trios the second male is a sexual competitor of the first and shares paternity of the brood [@SantosNakagawa2013; @SantosNakagawa2017]—although in about 30% of the trios in this population the two males are related and may gain indirect benefits from each other's offspring [@Santos2015]. If alternation served to resolve conflict over care, it should be strongest where conflict is greatest, and so higher in trios [@Johnstone2014; @JohnstoneSavage2019; @Halliwell2024]; conversely, if tracking more partners is harder, it should be lower in trios. Instead, alternation—observed or relative to the within-watch null model (D)—did not differ detectably between pairs and polyandrous groups. Because the confidence intervals leave room for differences of a few percentage points in either direction, this does not prove that the two mating systems are identical, but it does show that adding a sexual competitor to the group did not produce the coordination predicted by the conflict-resolution hypothesis, at least on a scale we could detect. Together with the provisioning rates, these results suggest that each carer's visits largely follow its own schedule regardless of who else feeds the brood.
+
+Females visited at similar rates whether they bred with one male or two, and alpha males at rates similar to those of males in pairs, although the intervals allow moderate differences. Beta males added visits at about a third of the alpha rate, so broods in trios probably received more visits in total; we did not model total visits per nest, and visit rate is not a direct measure of food delivered because load size and prey quality can vary among visits. In this population, individual provisioning rates are repeatable across days and breeding attempts, and in trios the rates of females and alpha males are more similar to each other than either is to the rate of beta males [@Holtmann2022]. Both features are consistent with observed alternation arising mainly as a by-product of each bird's own visiting pattern. Male care in dunnocks is known to depend on the male's mating access to the female and his likely paternity [@HatchwellDavies1990; @WhittinghamDunn1998; @SantosNakagawa2017], and paternity may predict how the males of a trio divide their effort better than the timing of each other's visits does.
+
+## Synchrony and workload
+
+Carers arrived within 2 min of each other about as often as expected, whereas simultaneous presence at the nest was rarer than expected in polyandrous groups. Because provisioning visits are brief, a carer can arrive within 2 min of the previous carer's arrival after the first carer has already left the nest, so close arrivals need not involve simultaneous presence at the nest. Overlaps between the female and the males in polyandrous groups occurred at about half the expected rate (ratio `r R$sync$poly_fm$ratio`), overlaps among the three members of trios at about a third (`r R$sync$poly_fab$ratio`), and overlaps between the two males rarer still (`r R$sync$poly_ab$ratio`). In pairs, overlaps were not detectably rarer than expected. The direct comparison, however, did not distinguish pairs from polyandrous groups, and after correction for multiple tests only the deficit among trio members remained. We therefore do not interpret the contrast in overlap as a difference between mating systems. One interpretation of the deficit is that a carer arriving while another is at the nest waits nearby until it leaves, which would produce close arrivals without joint presence. This is the opposite of long-tailed tits, where carers arrived while another was present more often than expected, as part of collective foraging trips [@Halliwell2023]. Avoidance of joint presence could also reflect conflict between males, which compete over paternity [@SantosNakagawa2013; @SantosNakagawa2017; @Lara2020]. Overlaps were few in absolute numbers, however, so testing whether carers actively avoid being at the nest together would benefit from whole-day recordings with precise arrival and departure times across larger samples, such as those provided by automated tracking systems [@BaldanVanLoon2022].
+
+Alternation was also insensitive to the demands of the brood. Nests with `r R$brood_sum$max_chicks` chicks received more than twice as many visits per hour as nests with one, yet carers there alternated no more relative to the maximum possible, and no more relative to the within-watch null model (D). In great tits, parents alternated more when their workload was experimentally reduced by brood-size manipulation than when broods were kept at control size or enlarged [@Baldan2019workload]. In dunnocks, natural variation in brood size (`r S$chicks_range` chicks present at the watch) produced a more than twofold difference in visit rate, and no such response in alternation appeared. Although this comparison is correlational rather than experimental, it reinforces the conclusion that alternation in this population follows from each bird's visiting pattern rather than being adjusted to group size or brood demand.
+
+## Limitations and conclusions
+
+Several limitations of our data should be kept in mind. Nest watches were short (about two hours) and restricted to chicks of `r S$chick_age` days of age, and a small amount of coordination could escape detection at this scale or at other stages of the nestling period. In our pseudo-pair analysis, watches from different nests filmed on the same morning were aligned by elapsed time since filming started rather than by time of day, because exact clock times were not recorded; two watches filmed on the same morning could therefore have started at different times, so pseudo-pairs capture shared environmental variation only approximately. The visits were filtered in 2020, before our analysis, and the raw visit logs are no longer available, so we cannot report how many brooding visits or visits by unidentified birds were excluded or whether excluded brooding visits also included visits in which a bird fed the chicks before brooding. Removing a visit from the middle of a sequence can create or remove an alternation, so these exclusions may have biased observed alternation. The null models were built from the same filtered sequences, and the direction of any bias in the comparison with them is unknown. Finally, we did not use paternity data, which could explain the variation among males in both effort and alternation.
+
+In conclusion, dunnock parents alternate their provisioning visits often, but no more often than expected from each bird's own visiting pattern and from shared changes in visit rate over the course of a watch. This held for pairs, for trios and between the sexes; between the alpha and beta males of polyandrous groups, it held against all but one null model. These results add to evidence that high alternation rates need careful null models before they are taken as evidence of negotiation over care [@Schlicht2016; @Ihle2019]. The same null models, together with a maximum-alternation bound that holds for any number of carers, apply directly to breeding groups larger than pairs [cf. @Halliwell2022].
+
+
+# Appendix A: Maximum possible alternation for any number of carers {.unnumbered}
+
+In an ordered sequence of $P_T$ visits in which the most active carer (or class) makes $P_\text{max}$ visits, the number of alternations $A$ is the number of runs of consecutive visits by the same carer minus one. The visits of the most active carer can form at most $P_T - P_\text{max} + 1$ runs, because each pair of its runs must be separated by at least one visit by another carer, and the remaining visits can form at most $P_T - P_\text{max}$ runs. Hence the total number of runs is at most $2(P_T - P_\text{max}) + 1$, giving $A \le 2(P_T - P_\text{max})$, and also $A \le P_T - 1$ since the first visit cannot be an alternation. Both bounds can be achieved: the first by placing each visit of the other carers singly between runs of the most active carer when $P_\text{max} > P_T - P_\text{max} + 1$, and the second by a sequence with no repeated carer when $P_\text{max} \le P_T - P_\text{max} + 1$. Thus $A_\text{max} = \min(P_T - 1, \, 2(P_T - P_\text{max}))$ for any number of carers. We also verified this formula by exhaustive enumeration for three carers.
+
+# Acknowledgements {.unnumbered}
+
+We thank the staff of the Dunedin Botanic Garden for access and assistance, and André V. Rodrigues, Renato Chaves and members of the LAGE laboratory for discussions.
+
+# Funding {.unnumbered}
+
+IPP was supported by a master's scholarship from the Conselho Nacional de Desenvolvimento Científico e Tecnológico (CNPq). Fieldwork was supported by grants from the Association for the Study of Animal Behaviour (ASAB), the Department of Zoology of the University of Otago, and a University of Otago Postgraduate Scholarship to ESAS. ESAS and SN are supported by the Canada Excellence Research Chairs (CERC) program.
+
+# Author contributions {.unnumbered}
+
+**IPP:** Conceptualization, Methodology, Software, Formal analysis, Writing – original draft. **BH:** Investigation, Data curation, Writing – review & editing. **CEL:** Investigation, Data curation, Writing – review & editing. **SN:** Conceptualization, Resources, Data curation, Funding acquisition, Supervision, Writing – review & editing. **ESAS:** Conceptualization, Investigation, Methodology, Data curation, Formal analysis, Visualization, Supervision, Funding acquisition, Writing – review & editing.
+
+# Competing interests {.unnumbered}
+
+The authors declare that they have no competing interests.
+
+# Data and code availability {.unnumbered}
+
+All data and code to reproduce the analyses, null models, figures and manuscript are openly available at <https://github.com/esantos2ua/dunnock-provisioning-alternation> (data under CC BY 4.0, code under the MIT licence). The repository will be archived on Zenodo with a digital object identifier (DOI) upon publication.
+
+# Use of artificial intelligence {.unnumbered}
+
+During the preparation of this work, the authors used Claude (Anthropic; Claude Opus 5.5) to assist in re-implementing and verifying analysis scripts, auditing original data files, generating figures, and drafting and editing sections of the manuscript text. The authors thoroughly reviewed and verified all analytical decisions, code, and text, and take full responsibility for the contents and conclusions of this manuscript.
+
+# References {.unnumbered}
+
+::: {#refs}
+:::

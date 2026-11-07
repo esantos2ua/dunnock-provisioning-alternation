@@ -1,0 +1,17 @@
+.Rhistory
+.RData
+.Ruserdata
+.Rproj.user/
+.DS_Store
+Rplots.pdf
+/.quarto/
+**/.quarto/
+manuscript/*_files/
+manuscript/*.html
+manuscript/*.docx
+manuscript/*.pdf
+manuscript/*.typ
+data/derived/*
+!data/derived/.gitkeep
+output/*
+!output/.gitkeep
