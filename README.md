@@ -7,6 +7,10 @@ Data, code and manuscript source for:
 > trios is largely explained by each parent's own visiting pattern.* Preprint,
 > EcoEvoRxiv (DOI to be added).
 
+Archived on Zenodo: version 1.0.0,
+[10.5281/zenodo.24043042](https://doi.org/10.5281/zenodo.24043042); all
+versions, [10.5281/zenodo.24043041](https://doi.org/10.5281/zenodo.24043041).
+
 We test whether dunnock (*Prunella modularis*) carers in socially monogamous
 pairs and socially polyandrous trios alternate their provisioning visits more
 than expected from each bird's own visiting pattern, using five null models
