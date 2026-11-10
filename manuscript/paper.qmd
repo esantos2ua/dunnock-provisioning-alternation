@@ -129,7 +129,7 @@ stopifnot(
 ```{=typst}
 #align(center)[
   #text(size: 11pt)[
-    Ingrid P. Paschoaletto#super[1], Benedikt Holtmann#super[2], Carlos E. Lara#super[3], Shinichi Nakagawa#super[4] and Eduardo S. A. Santos#super[4]#footnote(numbering: "*")[Corresponding author: #link("mailto:esantos2@ualberta.ca")[esantos2\@ualberta.ca]. ORCID: Benedikt Holtmann, #link("https://orcid.org/0000-0002-2995-7274")[0000-0002-2995-7274]\; Carlos E. Lara, #link("https://orcid.org/0000-0001-5425-0935")[0000-0001-5425-0935]\; Eduardo S. A. Santos, #link("https://orcid.org/0000-0002-0434-3655")[0000-0002-0434-3655]]
+    Ingrid P. Paschoaletto#super[1], Benedikt Holtmann#super[2], Carlos E. Lara#super[3], Shinichi Nakagawa#super[4] and Eduardo S. A. Santos#super[4]#footnote(numbering: "*")[Corresponding author: #link("mailto:esantos2@ualberta.ca")[esantos2\@ualberta.ca]. ORCID: Ingrid P. Paschoaletto, #link("https://orcid.org/0000-0003-4167-7539")[0000-0003-4167-7539]\; Benedikt Holtmann, #link("https://orcid.org/0000-0002-2995-7274")[0000-0002-2995-7274]\; Carlos E. Lara, #link("https://orcid.org/0000-0001-5425-0935")[0000-0001-5425-0935]\; Shinichi Nakagawa, #link("https://orcid.org/0000-0002-7765-5182")[0000-0002-7765-5182]\; Eduardo S. A. Santos, #link("https://orcid.org/0000-0002-0434-3655")[0000-0002-0434-3655]]
   ]
   #v(0.3em)
   #text(size: 9pt, fill: rgb("#555555"))[
@@ -154,7 +154,7 @@ stopifnot(
 ^2^ Department of Zoology, University of Otago, Dunedin, New Zealand  
 ^3^ Dirección Académica, Universidad Nacional de Colombia, La Paz, Colombia  
 ^4^ COSSEE, Collaboration for Open Science and Synthesis in Ecology and Evolution, Department of Biological Sciences, University of Alberta, Edmonton, AB, Canada  
-\* Corresponding author: [esantos2@ualberta.ca](mailto:esantos2@ualberta.ca); ORCID: Benedikt Holtmann, [0000-0002-2995-7274](https://orcid.org/0000-0002-2995-7274); Carlos E. Lara, [0000-0001-5425-0935](https://orcid.org/0000-0001-5425-0935); Eduardo S. A. Santos, [0000-0002-0434-3655](https://orcid.org/0000-0002-0434-3655)
+\* Corresponding author: [esantos2@ualberta.ca](mailto:esantos2@ualberta.ca); ORCID: Ingrid P. Paschoaletto, [0000-0003-4167-7539](https://orcid.org/0000-0003-4167-7539); Benedikt Holtmann, [0000-0002-2995-7274](https://orcid.org/0000-0002-2995-7274); Carlos E. Lara, [0000-0001-5425-0935](https://orcid.org/0000-0001-5425-0935); Shinichi Nakagawa, [0000-0002-7765-5182](https://orcid.org/0000-0002-7765-5182); Eduardo S. A. Santos, [0000-0002-0434-3655](https://orcid.org/0000-0002-0434-3655)
 
 **Keywords:** parental care, turn-taking, alternation, null models, polyandry, *Prunella modularis*
 
