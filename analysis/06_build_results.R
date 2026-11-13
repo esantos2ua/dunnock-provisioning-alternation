@@ -1,7 +1,7 @@
 # Single build step: every number the manuscript reports, as display strings
 #
 # Writes build/results.json. manuscript/paper.qmd reads it (R$...) so that no
-# statistic in the text is typed by hand (same design as brazil-gbd-manuscript).
+# statistic in the text is typed by hand.
 # Run from the repo root: Rscript analysis/06_build_results.R
 
 suppressMessages(library(jsonlite))
