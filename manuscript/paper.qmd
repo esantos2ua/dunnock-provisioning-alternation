@@ -538,7 +538,7 @@ In conclusion, dunnock parents alternate their provisioning visits often, but no
 # Funding {.unnumbered}
 
 
-This work was supported by the Conselho Nacional de Desenvolvimento Científico e Tecnológico (master's scholarship); the Association for the Study of Animal Behaviour (research grant); the Department of Zoology, University of Otago (research grant); the University of Otago (Postgraduate Scholarship); and the Canada Excellence Research Chairs program (grant number CERC-2022-00074).
+Funding details have been removed for double-anonymized review and are given in the Cover Page and Acknowledgements file.
 
 
 # Competing interests {.unnumbered}
