@@ -5,7 +5,7 @@ Data, code and manuscript source for:
 > Paschoaletto, I. P., Holtmann, B., Lara, C. E., Nakagawa, S. & Santos, E. S. A.
 > *Who's gonna feed the kids? Provisioning alternation in dunnock pairs and
 > trios is largely explained by each parent's own visiting pattern.* Preprint,
-> EcoEvoRxiv (DOI to be added).
+> EcoEvoRxiv. [10.32942/X2FM5R](https://doi.org/10.32942/X2FM5R)
 
 Archived on Zenodo: version 1.0.0,
 [10.5281/zenodo.24043042](https://doi.org/10.5281/zenodo.24043042); all
