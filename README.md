@@ -1,15 +1,8 @@
 # Provisioning alternation in dunnock pairs and trios
 
-Data, code and manuscript source for:
-
-> Paschoaletto, I. P., Holtmann, B., Lara, C. E., Nakagawa, S. & Santos, E. S. A.
-> *Who's gonna feed the kids? Provisioning alternation in dunnock pairs and
-> trios is largely explained by each parent's own visiting pattern.* Preprint,
-> EcoEvoRxiv. [10.32942/X2FM5R](https://doi.org/10.32942/X2FM5R)
-
-Archived on Zenodo: version 1.0.0,
-[10.5281/zenodo.24043042](https://doi.org/10.5281/zenodo.24043042); all
-versions, [10.5281/zenodo.24043041](https://doi.org/10.5281/zenodo.24043041).
+Data, code and manuscript source for a manuscript under double-anonymized
+review. Author names, affiliations and archive identifiers are withheld until
+review is complete.
 
 We test whether dunnock (*Prunella modularis*) carers in socially monogamous
 pairs and socially polyandrous trios alternate their provisioning visits more

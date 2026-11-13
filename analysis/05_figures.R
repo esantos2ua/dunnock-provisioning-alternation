@@ -2,6 +2,8 @@
 #
 # Colours: categorical slots 1-2 of the validated reference palette (dataviz
 # skill), monogamous = blue, polyandrous = orange; nulls in neutral grey.
+# Behavioral Ecology: all labels in black; Helvetica is used as the metric
+# equivalent of Arial (the base pdf device has no Arial).
 # Run from the repo root: Rscript analysis/05_figures.R
 
 suppressMessages({ library(ggplot2); library(patchwork) })
@@ -11,7 +13,7 @@ m <- readRDS("output/results/models.rds")
 dir.create("manuscript/figures", recursive = TRUE, showWarnings = FALSE)
 
 col_system <- c(monogamous = "#2a78d6", polyandrous = "#eb6834")
-ink <- "#0b0b0b"; ink2 <- "#52514e"; grid_col <- "#e6e5e0"; null_col <- "#8f8e89"
+ink <- "black"; ink2 <- "#52514e"; grid_col <- "#e6e5e0"; null_col <- "#8f8e89"
 scen_system <- c(mono = "monogamous", poly_fm = "polyandrous", poly_fab = "polyandrous",
                  poly_ab = "polyandrous")
 scen_short <- c(mono = "Pairs: female vs male", poly_fm = "Polyandrous: female vs males",
@@ -20,7 +22,7 @@ scen_short <- c(mono = "Pairs: female vs male", poly_fm = "Polyandrous: female v
 theme_paper <- theme_minimal(base_size = 8.5, base_family = "Helvetica") +
   theme(panel.grid.major.y = element_blank(), panel.grid.minor = element_blank(),
         panel.grid.major.x = element_line(colour = grid_col, linewidth = 0.3),
-        axis.text = element_text(colour = ink2), axis.title = element_text(colour = ink),
+        axis.text = element_text(colour = ink), axis.title = element_text(colour = ink),
         strip.text = element_text(colour = ink, face = "bold", hjust = 0),
         legend.position = "none", plot.margin = margin(4, 6, 4, 4))
 

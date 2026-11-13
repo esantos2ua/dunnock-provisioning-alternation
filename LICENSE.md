@@ -4,8 +4,7 @@
 
 MIT License
 
-Copyright (c) 2026 Ingrid P. Paschoaletto, Benedikt Holtmann, Carlos E. Lara,
-Shinichi Nakagawa and Eduardo S. A. Santos
+Copyright (c) 2026 The authors (names withheld for double-anonymized review)
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
